@@ -13,6 +13,7 @@ const LoginPage = lazy(() => import('@/pages/LoginPage'));
 const DashboardPage = lazy(() => import('@/pages/DashboardPage'));
 const PollBuilderPage = lazy(() => import('@/pages/PollBuilderPage'));
 const PublicPollPage = lazy(() => import('@/pages/PublicPollPage'));
+const DemoPage = lazy(() => import('@/pages/DemoPage'));
 const LiveAnalyticsPage = lazy(() => import('@/pages/LiveAnalyticsPage'));
 const ResultsPage = lazy(() => import('@/pages/ResultsPage'));
 const ProfilePage = lazy(() => import('@/pages/ProfilePage'));
@@ -46,6 +47,7 @@ export function AppRoutes() {
 
         {/* Public poll pages */}
         <Route element={<PublicLayout />}>
+          <Route path="/poll/demo" element={<DemoPage />} />
           <Route path="/poll/:slug" element={<PublicPollPage />} />
           <Route path="/results/:slug" element={<ResultsPage />} />
         </Route>
