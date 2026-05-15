@@ -1,4 +1,4 @@
-# ── Stage 1: Builder ──────────────────────────────────────────────────────────
+# Stage 1: Builder
 FROM node:20-alpine AS builder
 
 WORKDIR /app
@@ -17,7 +17,7 @@ RUN npm run build
 RUN npm prune --production
 
 
-# ── Stage 2: Production image ─────────────────────────────────────────────────
+# Stage 2: Production image
 FROM node:20-alpine AS production
 
 # Security: run as non-root

@@ -2,7 +2,7 @@ version: '3.9'
 
 services:
 
-  # ── Application ─────────────────────────────────────────────────────────────
+  # Application
   app:
     build:
       context: .
@@ -30,7 +30,7 @@ services:
       retries: 3
       start_period: 15s
 
-  # ── Dev mode (hot reload) ────────────────────────────────────────────────────
+  # Dev mode (hot reload)
   app-dev:
     build:
       context: .
@@ -58,7 +58,7 @@ services:
     profiles:
       - dev
 
-  # ── PostgreSQL ───────────────────────────────────────────────────────────────
+  # PostgreSQL
   postgres:
     image: postgres:16-alpine
     container_name: pulse-postgres
@@ -80,7 +80,7 @@ services:
       retries: 5
       start_period: 10s
 
-  # ── Redis ────────────────────────────────────────────────────────────────────
+  # Redis
   redis:
     image: redis:7-alpine
     container_name: pulse-redis
@@ -103,7 +103,7 @@ services:
       timeout: 3s
       retries: 5
 
-  # ── Drizzle Studio (DB GUI, dev only) ────────────────────────────────────────
+  # Drizzle Studio (DB GUI, dev only)
   studio:
     build:
       context: .
