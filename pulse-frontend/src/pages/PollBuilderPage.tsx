@@ -108,6 +108,9 @@ export default function PollBuilderPage() {
       const payload = {
         ...data,
         status: (publish ? 'published' : 'draft') as any,
+        expiresAt: data.expiresAt 
+    ? new Date(data.expiresAt).toISOString()  // utc
+    : undefined,
         questions: data.questions.map((q, qIndex) => ({
           ...q,
           displayOrder: qIndex,
