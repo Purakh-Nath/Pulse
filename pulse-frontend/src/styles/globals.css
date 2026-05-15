@@ -1,0 +1,174 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --bg-primary: #F7F7F4;
+    --bg-secondary: #EFEDE7;
+    --text-primary: #111111;
+    --text-secondary: #5E5E5E;
+    --accent-primary: #6C63FF;
+    --accent-secondary: #FF6B6B;
+    --accent-highlight: #00C2A8;
+    --border: rgba(0, 0, 0, 0.08);
+    --hover-glow: rgba(108, 99, 255, 0.18);
+    --success: #3DDC97;
+    --warning: #FFB84D;
+    --danger: #FF5A5F;
+    --shadow-card: 0 2px 16px rgba(0, 0, 0, 0.06);
+    --shadow-float: 0 16px 64px rgba(0, 0, 0, 0.12);
+  }
+
+  .dark {
+    --bg-primary: #0F1115;
+    --bg-secondary: #171A21;
+    --text-primary: #F5F5F5;
+    --text-secondary: #9B9B9B;
+    --border: rgba(255, 255, 255, 0.08);
+    --shadow-card: 0 2px 16px rgba(0, 0, 0, 0.3);
+    --shadow-float: 0 16px 64px rgba(0, 0, 0, 0.5);
+  }
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    transition: background-color 0.3s ease, color 0.3s ease;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+
+  ::selection {
+    background-color: rgba(108, 99, 255, 0.25);
+    color: inherit;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--accent-primary);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: rgba(108, 99, 255, 0.3);
+    border-radius: 3px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(108, 99, 255, 0.6);
+  }
+}
+
+@layer components {
+  /* Skeleton shimmer */
+  .skeleton {
+    @apply bg-gray-200 dark:bg-gray-700 rounded-lg overflow-hidden relative;
+    background-image: linear-gradient(
+      90deg,
+      transparent 25%,
+      rgba(255, 255, 255, 0.4) 50%,
+      transparent 75%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 2s linear infinite;
+  }
+
+  .dark .skeleton {
+    background-image: linear-gradient(
+      90deg,
+      transparent 25%,
+      rgba(255, 255, 255, 0.06) 50%,
+      transparent 75%
+    );
+  }
+
+  /* Glass morphism variant */
+  .glass {
+    @apply backdrop-blur-xl bg-white/70 dark:bg-white/5 border border-white/20 dark:border-white/10;
+  }
+
+  /* Pulse live indicator */
+  .pulse-dot {
+    @apply relative inline-flex;
+  }
+  .pulse-dot::before {
+    content: '';
+    @apply absolute inset-0 rounded-full bg-current animate-ping opacity-75;
+  }
+
+  /* Gradient text */
+  .gradient-text {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-[#6C63FF] to-[#FF6B6B];
+  }
+
+  /* Card base */
+  .card {
+    @apply bg-white dark:bg-[#171A21] border border-black/[0.08] dark:border-white/[0.08] rounded-2xl;
+    box-shadow: var(--shadow-card);
+  }
+
+  /* Noise texture overlay */
+  .noise::after {
+    content: '';
+    @apply absolute inset-0 opacity-[0.025] pointer-events-none;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  
+  .font-heading {
+    font-family: 'Space Grotesk', sans-serif;
+  }
+  
+  .animate-in {
+    animation: slideUp 0.4s ease-out both;
+  }
+  
+  /* Hide scrollbar */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

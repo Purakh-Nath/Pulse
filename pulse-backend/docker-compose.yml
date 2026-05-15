@@ -1,0 +1,133 @@
+version: '3.9'
+
+services:
+
+  # ── Application ─────────────────────────────────────────────────────────────
+  app:
+    build:
+      context: .
+      target: production
+    container_name: pulse-app
+    restart: unless-stopped
+    ports:
+      - '3000:3000'
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: postgresql://pulse:pulse@postgres:5432/pulse
+      REDIS_URL: redis://redis:6379
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - pulse-net
+    healthcheck:
+      test: ['CMD', 'wget', '-qO-', 'http://localhost:3000/health/live']
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+
+  # ── Dev mode (hot reload) ────────────────────────────────────────────────────
+  app-dev:
+    build:
+      context: .
+      target: builder
+    container_name: pulse-dev
+    restart: unless-stopped
+    command: npm run dev
+    ports:
+      - '3000:3000'
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: postgresql://pulse:pulse@postgres:5432/pulse
+      REDIS_URL: redis://redis:6379
+      NODE_ENV: development
+    volumes:
+      - ./src:/app/src:ro
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - pulse-net
+    profiles:
+      - dev
+
+  # ── PostgreSQL ───────────────────────────────────────────────────────────────
+  postgres:
+    image: postgres:16-alpine
+    container_name: pulse-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: pulse
+      POSTGRES_PASSWORD: pulse
+      POSTGRES_DB: pulse
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - pulse-net
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U pulse -d pulse']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  # ── Redis ────────────────────────────────────────────────────────────────────
+  redis:
+    image: redis:7-alpine
+    container_name: pulse-redis
+    restart: unless-stopped
+    command: >
+      redis-server
+        --maxmemory 256mb
+        --maxmemory-policy allkeys-lru
+        --save 60 1
+        --loglevel warning
+    ports:
+      - '6379:6379'
+    volumes:
+      - redis-data:/data
+    networks:
+      - pulse-net
+    healthcheck:
+      test: ['CMD', 'redis-cli', 'ping']
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+  # ── Drizzle Studio (DB GUI, dev only) ────────────────────────────────────────
+  studio:
+    build:
+      context: .
+      target: builder
+    container_name: pulse-studio
+    command: npm run db:studio
+    ports:
+      - '4983:4983'
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: postgresql://pulse:pulse@postgres:5432/pulse
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - pulse-net
+    profiles:
+      - dev
+
+volumes:
+  postgres-data:
+  redis-data:
+
+networks:
+  pulse-net:
+    driver: bridge
