@@ -17,6 +17,7 @@ import { useAuthStore } from '@/stores/authStore';
 import { authService } from '@/api/auth';
 import { queryClient } from '@/providers/QueryProvider';
 import toast from 'react-hot-toast';
+import { queryKeys } from '@/config/queryKeys';
 
 const navItems = [
   { to: '/dashboard', icon: LayoutDashboard, label: 'Dashboard', end: true },
