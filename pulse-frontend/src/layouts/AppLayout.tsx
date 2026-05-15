@@ -31,19 +31,16 @@ export function AppLayout() {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const handleLogout = async () => {
-    clearAuth();
-    queryClient.clear();
-    navigate('/login');
-    toast.success('Signed out successfully');
     try {
       await authService.logout();
     } catch {
       /* swallow */
     } finally {
-      // clearAuth();
-      // queryClient.clear();
-      // navigate('/login');
-      // toast.success('Signed out successfully');
+      clearAuth();
+      queryClient.removeQueries({ queryKey: queryKeys.me });
+      queryClient.clear();
+      navigate('/login');
+      toast.success('Signed out successfully');
     }
   };
 

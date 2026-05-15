@@ -8,7 +8,7 @@ import { queryKeys } from '@/config/queryKeys';
 // Must be called once at the app root
 
 export function useAuth() {
-  const { user, isAuthenticated, setUser, clearAuth, setHasChecked } =
+  const { user, isAuthenticated, setUser, clearAuth, setHasChecked , hasChecked} =
     useAuthStore();
 
   const { data, isError, isFetching } = useQuery({
@@ -17,6 +17,7 @@ export function useAuth() {
     retry: false,
     staleTime: 1000 * 60 * 5, // 5 min
     refetchOnWindowFocus: false,
+    enabled: !hasChecked || !user,
   });
 
   useEffect(() => {
