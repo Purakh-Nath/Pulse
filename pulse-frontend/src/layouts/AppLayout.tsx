@@ -31,19 +31,32 @@ export function AppLayout() {
   const navigate = useNavigate();
   const [mobileOpen, setMobileOpen] = useState(false);
 
+  // const handleLogout = async () => {
+  //   try {
+  //     await authService.logout();
+  //   } catch {
+  //     /* swallow */
+  //   } finally {
+  //     clearAuth();
+  //     queryClient.removeQueries({ queryKey: queryKeys.me });
+  //     queryClient.clear();
+  //     navigate('/login');
+  //     toast.success('Signed out successfully');
+  //   }
+  // };
+
   const handleLogout = async () => {
-    try {
-      await authService.logout();
-    } catch {
-      /* swallow */
-    } finally {
-      clearAuth();
-      queryClient.removeQueries({ queryKey: queryKeys.me });
-      queryClient.clear();
-      navigate('/login');
-      toast.success('Signed out successfully');
-    }
-  };
+  clearAuth();
+  queryClient.removeQueries({ queryKey: queryKeys.me });
+  queryClient.clear();
+  navigate('/login');
+  toast.success('Signed out successfully');
+  try {
+    await authService.logout();
+  } catch {
+    /* swallow */
+  }
+};
 
   const initials = user?.name
     .split(' ')
