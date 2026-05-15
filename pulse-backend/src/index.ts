@@ -7,7 +7,7 @@ import { createApp } from './app';
 import { initRedis, closeRedis } from './services/redis';
 import { initOidcClient } from './services/oidc';
 import { initRateLimiters } from './services/rateLimiter';
-import { closeDb } from './db/client';
+import { closeDb, getPool } from './db/client';
 import { closeQueues } from './queues';
 import { setupSockets } from './sockets';
 // Workers
@@ -67,6 +67,15 @@ async function bootstrap(): Promise<void> {
   });
 
   logger.info(`Pulse is live -> http://localhost:${env.PORT}`);
+
+  setInterval(async () => {
+  try {
+    await getPool().query('SELECT 1');
+    logger.debug('DB keepalive ping');
+  } catch (err) {
+    logger.warn({ err }, 'DB keepalive failed');
+  }
+}, 4 * 60 * 1000);
 
   // Graceful shutdown 
   const shutdown = async (signal: string): Promise<void> => {
