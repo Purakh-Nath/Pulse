@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Outlet, NavLink, useNavigate } from 'react-router-dom';
+import { Outlet, NavLink } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   LayoutDashboard,
@@ -16,8 +16,8 @@ import { useTheme } from '@/providers/ThemeProvider';
 import { useAuthStore } from '@/stores/authStore';
 import { authService } from '@/api/auth';
 import { queryClient } from '@/providers/QueryProvider';
-import toast from 'react-hot-toast';
-import { queryKeys } from '@/config/queryKeys';
+// import toast from 'react-hot-toast';
+// import { queryKeys } from '@/config/queryKeys';
 
 const navItems = [
   { to: '/dashboard', icon: LayoutDashboard, label: 'Dashboard', end: true },
@@ -28,7 +28,7 @@ export function AppLayout() {
   const { resolvedTheme, toggleTheme } = useTheme();
   const user = useAuthStore((s) => s.user);
   const clearAuth = useAuthStore((s) => s.clearAuth);
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const [mobileOpen, setMobileOpen] = useState(false);
 
   // const handleLogout = async () => {
