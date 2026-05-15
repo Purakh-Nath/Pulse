@@ -11,11 +11,9 @@ export function getPool(): Pool {
   if (!_pool) {
     _pool = new Pool({
       connectionString: env.DATABASE_URL,
-      // max: 20,
-      max: 10,
+      max: 20,
       idleTimeoutMillis: 30000,
-      connectionTimeoutMillis: 15000,
-      // connectionTimeoutMillis: 5000, 
+      connectionTimeoutMillis: 5000,
       ssl: env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : undefined,
     });
     _pool.on('error', (err) => logger.error({ err }, 'PostgreSQL pool error'));
