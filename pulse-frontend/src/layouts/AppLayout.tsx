@@ -45,17 +45,11 @@ export function AppLayout() {
   //   }
   // };
 
-  const handleLogout = async () => {
+const handleLogout = async () => {
   clearAuth();
-  queryClient.removeQueries({ queryKey: queryKeys.me });
   queryClient.clear();
-  navigate('/login');
-  toast.success('Signed out successfully');
-  try {
-    await authService.logout();
-  } catch {
-    /* swallow */
-  }
+  authService.logout().catch(() => {});
+  window.location.replace('/login'); // hard redirect, kills everything
 };
 
   const initials = user?.name
