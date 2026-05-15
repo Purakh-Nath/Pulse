@@ -46,7 +46,7 @@ function readOrSetCookie(req: Request, res: Response): string {
   res.cookie(ANON_COOKIE, sign(raw), {
     httpOnly: true,
     secure: env.NODE_ENV === 'production',
-    sameSite: 'lax',
+    sameSite: env.NODE_ENV === 'production' ? 'none' : 'lax',
     maxAge: COOKIE_TTL,
     path: '/',
   });
