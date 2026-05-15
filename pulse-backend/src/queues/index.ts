@@ -5,11 +5,13 @@ import { logger } from '../config/logger';
 // Parse Redis URL for BullMQ connection
 function redisConnection(): ConnectionOptions {
   const url = new URL(env.REDIS_URL);
+  const isTLS = env.REDIS_URL.startsWith('rediss://');
   return {
     host: url.hostname,
     port: parseInt(url.port || '6379'),
     password: url.password || undefined,
     db: url.pathname ? parseInt(url.pathname.slice(1)) || 0 : 0,
+    tls: isTLS ? {} : undefined, 
   };
 }
 
