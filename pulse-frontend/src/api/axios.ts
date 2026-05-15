@@ -26,7 +26,8 @@ const api: AxiosInstance = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
-  timeout: 15000,
+  // timeout: 15000,
+  timeout: 30000,
 });
 
 // Request interceptor — nothing special needed (cookies are auto-sent)
