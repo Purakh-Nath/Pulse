@@ -83,7 +83,12 @@ export function startPublishWorker(): Worker<PublishJob> {
 
       logger.info({ pollId }, 'Poll results published');
     },
-    { connection, concurrency: 3 }
+    { 
+      connection, 
+      concurrency: 3, // 2
+      stalledInterval: 120_000,   // was 30s default
+      lockDuration: 60_000,
+    }
   );
 
   worker.on('failed', (job, err) => {

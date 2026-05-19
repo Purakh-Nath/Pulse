@@ -59,8 +59,10 @@ export function getAnalyticsQueue(): Queue<AnalyticsJob> {
     _analyticsQueue = new Queue<AnalyticsJob>(QUEUE_ANALYTICS, {
       connection,
       defaultJobOptions: {
-        removeOnComplete: 500,
-        removeOnFail: 100,
+        // removeOnComplete: 500,
+        // removeOnFail: 100,
+        removeOnComplete: { count: 100 },  // plain number works but object form is explicit
+        removeOnFail: { count: 50 },
         attempts: 3,
         backoff: { type: 'exponential', delay: 1000 },
       },

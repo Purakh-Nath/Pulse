@@ -96,8 +96,10 @@ export function startAnalyticsWorker(): Worker<AnalyticsJob> {
     },
     {
       connection,
-      concurrency: 20,
-      limiter: { max: 200, duration: 1000 },
+      concurrency: 5, // 20 - overkill
+      stalledInterval: 120_000,    // check stalled jobs every 2min (was 30s default)
+      lockDuration: 60_000,        // keep lock alive longer, fewer renewals
+      // limiter: { max: 200, duration: 1000 },
     }
   );
 
