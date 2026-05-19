@@ -88,6 +88,7 @@ export function startPublishWorker(): Worker<PublishJob> {
       concurrency: 3, // 2
       stalledInterval: 120_000,   // was 30s default
       lockDuration: 60_000,
+      drainDelay: 30,
     }
   );
 

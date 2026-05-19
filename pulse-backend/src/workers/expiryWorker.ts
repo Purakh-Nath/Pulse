@@ -52,6 +52,7 @@ export function startExpiryWorker(): Worker<ExpiryJob> {
       concurrency: 2,  // was 5
       stalledInterval: 120_000,   // was 30s default
       lockDuration: 60_000,
+      drainDelay: 30,
     }
   );
 
