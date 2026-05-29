@@ -102,8 +102,8 @@ export async function logout(req: Request, res: Response, next: NextFunction): P
     const token   = cookies['refresh_token'];
     if (token) await revokeRefreshToken(token);
 
-    res.clearCookie('access_token');
-    res.clearCookie('refresh_token');
+    res.clearCookie('access_token',COOKIE_BASE);
+    res.clearCookie('refresh_token',COOKIE_BASE);
 
     ok(res, { message: 'Logged out successfully' });
   } catch (err) { next(err); }
@@ -116,8 +116,8 @@ export async function logoutAll(req: Request, res: Response, next: NextFunction)
     const authed = req as AuthenticatedRequest;
     await revokeAllUserSessions(authed.user.id);
 
-    res.clearCookie('access_token');
-    res.clearCookie('refresh_token');
+    res.clearCookie('access_token',COOKIE_BASE);
+    res.clearCookie('refresh_token',COOKIE_BASE);
 
     ok(res, { message: 'All sessions revoked' });
   } catch (err) { next(err); }

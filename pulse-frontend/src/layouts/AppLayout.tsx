@@ -46,10 +46,15 @@ export function AppLayout() {
   // };
 
 const handleLogout = async () => {
-  clearAuth();
-  queryClient.clear();
-  authService.logout().catch(() => {});
-  window.location.replace('/login'); // hard redirect, kills everything
+  try {
+    await authService.logout();  // wait for backend to clear cookies
+  } catch {
+    // swallow - still log out locally even if request fails
+  } finally {
+    clearAuth();
+    queryClient.clear();
+    window.location.replace('/login');
+  }
 };
 
   const initials = user?.name
