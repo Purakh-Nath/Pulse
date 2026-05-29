@@ -10,44 +10,25 @@ let _authLimiter: RateLimiterRedis | RateLimiterMemory;
 
 export function initRateLimiters(): void {
   const redis = getRedis();
+  const base = { storeClient: redis, useRedisPackage: true } as const;
 
-  const base = {
-    storeClient: redis,
-    useRedisPackage: true,
-  } as const;
+  _globalLimiter    = new RateLimiterMemory({ points: 200, duration: 60 });
+  _analyticsLimiter = new RateLimiterMemory({ points: 30,  duration: 60 });
 
-  // Global IP limiter - 200 req/min
-  _globalLimiter = new RateLimiterRedis({
-    ...base,
-    keyPrefix: 'rl:global',
-    points: 200,
-    duration: 60,
-  });
-
-  // Poll submit - 5 per 60s per identifier (anti-spam)
-  _submitLimiter = new RateLimiterRedis({
-    ...base,
-    keyPrefix: 'rl:submit',
-    points: 5,
-    duration: 60,
-    blockDuration: 120,
-  });
-
-  // Analytics endpoint - 30 req/min
-  _analyticsLimiter = new RateLimiterRedis({
-    ...base,
-    keyPrefix: 'rl:analytics',
-    points: 30,
-    duration: 60,
-  });
-
-  // Auth endpoints - 10 req/min (brute-force protection)
   _authLimiter = new RateLimiterRedis({
     ...base,
     keyPrefix: 'rl:auth',
     points: 10,
     duration: 60,
     blockDuration: 300,
+  });
+
+  _submitLimiter = new RateLimiterRedis({
+    ...base,
+    keyPrefix: 'rl:submit',
+    points: 5,
+    duration: 60,
+    blockDuration: 120,
   });
 }
 
