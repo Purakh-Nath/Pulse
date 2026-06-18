@@ -28,11 +28,11 @@ export const DEFAULT_PAGE_SIZE = 12;
 // Toast durations
 export const TOAST_DURATION = 4000;
 
-// Chart colors
+// Chart colors - Cohesive warm orange palette instead of a rainbow
 export const CHART_COLORS = [
-  '#6C63FF',
-  '#FF6B6B',
-  '#00C2A8',
-  '#FFC857',
-  '#7DCE82',
+  '#E8520A', // Primary (Deep Orange)
+  '#A8A49E', // Secondary (Warm Gray)
+  '#CA8A04', // Tertiary (Amber)
+  '#F26B43', // Quaternary (Lighter Accent Orange)
+  '#D4A373', // Quinary (Soft Sand)
 ];
