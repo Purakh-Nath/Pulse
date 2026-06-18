@@ -3,16 +3,14 @@ import { motion } from 'framer-motion';
 
 export function AuthLayout() {
   return (
-    <div className="min-h-screen flex" style={{ background: '#080B12', fontFamily: "'DM Sans', sans-serif" }}>
+    <div className="min-h-screen flex bg-bg-dark font-body text-text-dark">
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Syne:wght@700;800&display=swap');
-
         .aurora-orb-1 {
           position: absolute;
           width: 520px;
           height: 520px;
           border-radius: 50%;
-          background: radial-gradient(circle, rgba(99,102,241,0.35) 0%, rgba(99,102,241,0) 70%);
+          background: radial-gradient(circle, rgba(232, 82, 10, 0.15) 0%, rgba(232, 82, 10, 0) 70%);
           top: -80px;
           left: -120px;
           filter: blur(40px);
@@ -23,7 +21,7 @@ export function AuthLayout() {
           width: 400px;
           height: 400px;
           border-radius: 50%;
-          background: radial-gradient(circle, rgba(236,72,153,0.28) 0%, rgba(236,72,153,0) 70%);
+          background: radial-gradient(circle, rgba(232, 82, 10, 0.1) 0%, rgba(232, 82, 10, 0) 70%);
           bottom: 60px;
           right: -60px;
           filter: blur(50px);
@@ -34,7 +32,7 @@ export function AuthLayout() {
           width: 300px;
           height: 300px;
           border-radius: 50%;
-          background: radial-gradient(circle, rgba(34,211,238,0.2) 0%, rgba(34,211,238,0) 70%);
+          background: radial-gradient(circle, rgba(232, 82, 10, 0.08) 0%, rgba(232, 82, 10, 0) 70%);
           bottom: 200px;
           left: 120px;
           filter: blur(40px);
@@ -53,76 +51,54 @@ export function AuthLayout() {
         }
 
         .glass-card {
-          background: rgba(255,255,255,0.04);
-          border: 1px solid rgba(255,255,255,0.09);
+          background: rgba(255,255,255,0.03);
+          border: 1px solid var(--border);
           backdrop-filter: blur(20px);
         }
 
         .poll-bar-bg {
-          background: rgba(255,255,255,0.07);
+          background: rgba(255,255,255,0.05);
         }
         .poll-bar-fill {
-          background: linear-gradient(90deg, #6366f1, #ec4899);
+          background: var(--accent);
         }
 
         .stat-badge {
-          background: rgba(99,102,241,0.15);
-          border: 1px solid rgba(99,102,241,0.3);
-          color: #a5b4fc;
+          background: var(--accent-bg);
+          border: 1px solid var(--accent-border);
+          color: var(--accent);
           font-size: 11px;
-          font-weight: 500;
+          font-weight: 600;
           padding: 3px 10px;
           border-radius: 20px;
           letter-spacing: 0.05em;
         }
 
-        .logo-ring {
-          background: linear-gradient(135deg, #6366f1, #ec4899);
-          border-radius: 14px;
-          padding: 1px;
-        }
-        .logo-inner {
-          background: #080B12;
-          border-radius: 13px;
-          width: 40px;
-          height: 40px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        }
-        .logo-icon {
-          background: linear-gradient(135deg, #6366f1, #ec4899);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-        }
-
         .divider-line {
           height: 1px;
-          background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
+          background: var(--border);
         }
 
         .right-panel {
-          background: #0C0F18;
-          border-left: 1px solid rgba(255,255,255,0.05);
+          background: var(--bg-2);
+          border-left: 1px solid var(--border);
         }
 
         .headline {
-          font-family: 'Syne', sans-serif;
-          font-weight: 800;
+          font-family: var(--heading);
+          font-weight: 600;
           font-size: 52px;
           line-height: 1.05;
           letter-spacing: -0.03em;
-          color: #fff;
+          color: var(--text-h);
         }
         .headline span {
-          background: linear-gradient(135deg, #818cf8, #f472b6);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
+          color: var(--accent);
         }
       `}</style>
 
       {/* LEFT — Branding */}
-      <div className="hidden lg:flex flex-col justify-between w-1/2 p-12 relative overflow-hidden" style={{ background: '#080B12' }}>
+      <div className="hidden lg:flex flex-col justify-between w-1/2 p-12 relative overflow-hidden bg-bg-dark">
         <div className="aurora-orb-1" />
         <div className="aurora-orb-2" />
         <div className="aurora-orb-3" />
@@ -154,7 +130,7 @@ export function AuthLayout() {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4, duration: 0.6 }}
-            style={{ color: 'rgba(255,255,255,0.45)', fontSize: 15, lineHeight: 1.7, maxWidth: 320, fontFamily: "'DM Sans', sans-serif" }}
+            className="text-text-muted text-[15px] leading-relaxed max-w-[320px]"
           >
             Real-time responses. Live analytics. Built for teams who move at the speed of ideas.
           </motion.p>
@@ -167,7 +143,7 @@ export function AuthLayout() {
             className="glass-card rounded-2xl p-5 max-w-xs"
           >
             <div className="flex items-center justify-between mb-4">
-              <p style={{ color: '#fff', fontSize: 13, fontWeight: 500 }}>What's your preferred work style?</p>
+              <p className="text-text-dark-h text-[13px] font-medium">What's your preferred work style?</p>
               <span className="stat-badge">Live</span>
             </div>
             <div className="divider-line mb-4" />
@@ -177,9 +153,9 @@ export function AuthLayout() {
               { label: 'In-office', pct: 7 },
             ].map(({ label, pct }, i) => (
               <div key={label} className="mb-3 last:mb-0">
-                <div className="flex justify-between mb-1" style={{ fontSize: 12, color: 'rgba(255,255,255,0.5)' }}>
+                <div className="flex justify-between mb-1 text-[12px] text-text-muted">
                   <span>{label}</span>
-                  <span style={{ color: '#a5b4fc', fontWeight: 600 }}>{pct}%</span>
+                  <span className="text-accent font-semibold">{pct}%</span>
                 </div>
                 <div className="h-1 poll-bar-bg rounded-full overflow-hidden">
                   <motion.div
@@ -192,11 +168,11 @@ export function AuthLayout() {
               </div>
             ))}
             <div className="divider-line mt-4 mb-3" />
-            <p style={{ fontSize: 11, color: 'rgba(255,255,255,0.25)' }}>247 responses · Updates every 3s</p>
+            <p className="text-[11px] text-text-muted opacity-70">247 responses · Updates every 3s</p>
           </motion.div>
         </div>
 
-        <div className="relative z-10" style={{ color: 'rgba(255,255,255,0.2)', fontSize: 11, fontFamily: "'DM Sans', sans-serif" }}>
+        <div className="relative z-10 text-[11px] text-text-muted opacity-70">
           © 2026 Pulse Platform
         </div>
       </div>

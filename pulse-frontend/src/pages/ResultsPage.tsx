@@ -97,15 +97,15 @@ export default function ResultsPage() {
           <BarChart3 className="w-3.5 h-3.5" />
           {isFinalResults ? 'Final Results' : 'Published Results'}
         </div>
-        <h1 className="font-heading text-4xl lg:text-5xl font-bold text-[#111] dark:text-white mb-6 text-balance">
+        <h1 className="font-heading text-4xl lg:text-5xl font-bold text-text-heading dark:text-text-dark-h mb-6 text-balance">
           {poll.title}
         </h1>
         {poll.description && (
-          <p className="text-lg text-[#5E5E5E] dark:text-gray-400 max-w-2xl mx-auto text-balance mb-8">
+          <p className="text-lg text-text-muted dark:text-text-dark max-w-2xl mx-auto text-balance mb-8">
             {poll.description}
           </p>
         )}
-        <div className="flex flex-wrap items-center justify-center gap-6 text-sm text-[#5E5E5E] dark:text-gray-400">
+        <div className="flex flex-wrap items-center justify-center gap-6 text-sm text-text-muted dark:text-text-dark">
           <span className="flex items-center gap-1.5">
             <Users className="w-4 h-4" />
             {formatNumber(analytics.totalResponses)} total responses
@@ -129,7 +129,7 @@ export default function ResultsPage() {
             transition={{ duration: 0.5, delay: i * 0.1 }}
             className="card p-6 md:p-10"
           >
-            <h3 className="font-heading text-2xl font-semibold text-[#111] dark:text-white mb-8">
+            <h3 className="font-heading text-2xl font-semibold text-text-heading dark:text-text-dark-h mb-8">
               {q.questionText}
             </h3>
 

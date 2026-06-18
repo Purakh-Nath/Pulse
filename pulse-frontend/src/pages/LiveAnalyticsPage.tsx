@@ -127,13 +127,13 @@ export default function LiveAnalyticsPage() {
         <div>
           <Link
             to="/dashboard"
-            className="inline-flex items-center gap-1.5 text-sm text-[#5E5E5E] hover:text-[#111] dark:text-gray-400 dark:hover:text-white transition-colors mb-4"
+            className="inline-flex items-center gap-1.5 text-sm text-text-muted hover:text-text-heading dark:text-text-dark hover:text-text-dark-h transition-colors mb-4"
           >
             <ArrowLeft className="w-4 h-4" />
             Back to Dashboard
           </Link>
           <div className="flex items-center gap-3 mb-2">
-            <h1 className="font-heading text-3xl font-bold text-[#111] dark:text-white">
+            <h1 className="font-heading text-3xl font-bold text-text-heading dark:text-text-dark-h">
               {poll.title}
             </h1>
             {poll.status === 'active' && !isExpired && (
@@ -141,13 +141,13 @@ export default function LiveAnalyticsPage() {
             )}
             {isExpired && <LiveBadge variant="red" label="EXPIRED" />}
             {pollIsPublished && (
-              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-[#3DDC97]/10 text-[#3DDC97]">
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-success/10 text-success">
                 <Globe className="w-3 h-3" />
                 Results Published
               </span>
             )}
           </div>
-          <p className="text-[#5E5E5E] dark:text-gray-400 max-w-2xl text-sm">
+          <p className="text-text-muted dark:text-text-dark max-w-2xl text-sm">
             {poll.description || 'No description provided.'}
           </p>
         </div>
@@ -197,11 +197,11 @@ export default function LiveAnalyticsPage() {
           transition={{ duration: 0.4 }}
           className="card p-6"
         >
-          <div className="flex items-center gap-2 text-sm font-medium text-[#5E5E5E] dark:text-gray-400 mb-2">
-            <Activity className="w-4 h-4 text-[#6C63FF]" />
+          <div className="flex items-center gap-2 text-sm font-medium text-text-muted dark:text-text-dark mb-2">
+            <Activity className="w-4 h-4 text-accent" />
             Total Responses
           </div>
-          <div className="font-heading text-4xl font-bold text-[#111] dark:text-white">
+          <div className="font-heading text-4xl font-bold text-text-heading dark:text-text-dark-h">
             <AnimatedCounter value={displayTotalResponses} />
           </div>
         </motion.div>
@@ -212,16 +212,16 @@ export default function LiveAnalyticsPage() {
           transition={{ duration: 0.4, delay: 0.1 }}
           className="card p-6"
         >
-          <div className="flex items-center gap-2 text-sm font-medium text-[#5E5E5E] dark:text-gray-400 mb-2">
-            <Users className="w-4 h-4 text-[#3DDC97]" />
+          <div className="flex items-center gap-2 text-sm font-medium text-text-muted dark:text-text-dark mb-2">
+            <Users className="w-4 h-4 text-success" />
             Active Viewers
           </div>
-          <div className="font-heading text-4xl font-bold text-[#111] dark:text-white flex items-center gap-3">
+          <div className="font-heading text-4xl font-bold text-text-heading dark:text-text-dark-h flex items-center gap-3">
             <AnimatedCounter value={displayActiveUsers} />
             {displayActiveUsers > 0 && (
               <span className="relative flex h-3 w-3">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#3DDC97] opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-3 w-3 bg-[#3DDC97]"></span>
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-success opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-3 w-3 bg-success"></span>
               </span>
             )}
           </div>
@@ -233,9 +233,9 @@ export default function LiveAnalyticsPage() {
           transition={{ duration: 0.4, delay: 0.2 }}
           className="card p-6"
         >
-          <div className="flex items-center gap-2 text-sm font-medium text-[#5E5E5E] dark:text-gray-400 mb-2">
+          <div className="flex items-center gap-2 text-sm font-medium text-text-muted dark:text-text-dark mb-2">
             <svg
-              className="w-4 h-4 text-[#FFC857]"
+              className="w-4 h-4 text-warning"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
@@ -245,7 +245,7 @@ export default function LiveAnalyticsPage() {
             </svg>
             Completion Rate
           </div>
-          <div className="font-heading text-4xl font-bold text-[#111] dark:text-white">
+          <div className="font-heading text-4xl font-bold text-text-heading dark:text-text-dark-h">
             <AnimatedCounter value={analytics.completionRate} suffix="%" />
           </div>
         </motion.div>
@@ -261,9 +261,9 @@ export default function LiveAnalyticsPage() {
             transition={{ duration: 0.4, delay: 0.3 + i * 0.1 }}
             className="card p-6 md:p-8"
           >
-            <h3 className="font-heading text-xl font-semibold text-[#111] dark:text-white mb-6">
+            <h3 className="font-heading text-xl font-semibold text-text-heading dark:text-text-dark-h mb-6">
               {q.questionText}
-              <span className="ml-3 text-sm font-normal text-[#5E5E5E]">
+              <span className="ml-3 text-sm font-normal text-text-muted">
                 {q.totalAnswers} answers
               </span>
             </h3>
@@ -354,30 +354,30 @@ export default function LiveAnalyticsPage() {
               </button>
 
               {/* Icon */}
-              <div className="w-14 h-14 rounded-2xl bg-[#3DDC97]/10 flex items-center justify-center mb-5">
-                <Globe className="w-7 h-7 text-[#3DDC97]" />
+              <div className="w-14 h-14 rounded-2xl bg-success/10 flex items-center justify-center mb-5">
+                <Globe className="w-7 h-7 text-success" />
               </div>
 
-              <h2 className="font-heading text-2xl font-bold text-[#111] dark:text-white mb-2">
+              <h2 className="font-heading text-2xl font-bold text-text-heading dark:text-text-dark-h mb-2">
                 Results Published! 🎉
               </h2>
-              <p className="text-sm text-[#5E5E5E] dark:text-gray-400 mb-6">
+              <p className="text-sm text-text-muted dark:text-text-dark mb-6">
                 Your poll results are now publicly accessible. Share the link below
                 with anyone - no login required to view them.
               </p>
 
               {/* Link box */}
-              <div className="flex items-center gap-2 p-3 rounded-xl bg-gray-50 dark:bg-[#0F1117] border border-black/[0.06] dark:border-white/[0.06] mb-4">
-                <span className="flex-1 text-sm text-[#111] dark:text-white font-mono truncate">
+              <div className="flex items-center gap-2 p-3 rounded-xl bg-bg-2 dark:bg-bg-dark-2 border border-border dark:border-border-dark mb-4">
+                <span className="flex-1 text-sm text-text-heading dark:text-text-dark-h font-mono truncate">
                   {resultsUrl}
                 </span>
                 <button
                   onClick={handleCopyResultsLink}
-                  className="shrink-0 p-1.5 rounded-lg hover:bg-black/5 dark:hover:bg-white/5 transition-colors text-[#5E5E5E] dark:text-gray-400"
+                  className="shrink-0 p-1.5 rounded-lg hover:bg-black/5 dark:hover:bg-white/5 transition-colors text-text-muted dark:text-text-dark"
                   title="Copy link"
                 >
                   {linkCopied ? (
-                    <Check className="w-4 h-4 text-[#3DDC97]" />
+                    <Check className="w-4 h-4 text-success" />
                   ) : (
                     <Copy className="w-4 h-4" />
                   )}

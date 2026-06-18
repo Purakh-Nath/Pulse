@@ -79,7 +79,7 @@ export default function ProfilePage() {
 
   return (
     <div className="max-w-2xl mx-auto">
-      <h1 className="font-heading text-3xl font-bold text-[#111] dark:text-white mb-8">
+      <h1 className="font-heading text-3xl font-bold text-text-heading dark:text-text-dark-h mb-8">
         Profile & Settings
       </h1>
 
@@ -91,14 +91,14 @@ export default function ProfilePage() {
           className="card overflow-hidden"
         >
           <div className="p-6 md:p-8">
-            <h2 className="text-lg font-semibold text-[#111] dark:text-white flex items-center gap-2 mb-6">
-              <User className="w-5 h-5 text-[#6C63FF]" />
+            <h2 className="text-lg font-semibold text-text-heading dark:text-text-dark-h flex items-center gap-2 mb-6">
+              <User className="w-5 h-5 text-accent" />
               Personal Information
             </h2>
 
             <form onSubmit={handleSubmit((data) => updateProfile(data))} className="space-y-6">
               <div className="flex items-center gap-6 mb-8">
-<div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-[#A0522D] via-[#C17A5C] to-[#D4AF37] flex items-center justify-center text-white text-2xl font-bold shrink-0 shadow-lg hover:shadow-xl transition-shadow duration-300 select-none cursor-pointer">
+<div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-accent to-warning flex items-center justify-center text-white text-2xl font-bold shrink-0 shadow-lg hover:shadow-xl transition-shadow duration-300 select-none cursor-pointer">
   {userProfile?.name
     .split(' ')
     .map((n) => n[0])
@@ -108,7 +108,7 @@ export default function ProfilePage() {
 </div>
 
                 <div>
-                  <div className="text-sm font-medium text-[#5E5E5E] dark:text-gray-400 mb-1 flex items-center gap-1.5">
+                  <div className="text-sm font-medium text-text-muted dark:text-text-dark mb-1 flex items-center gap-1.5">
                     <Mail className="w-4 h-4" />
                     {userProfile?.email}
                   </div>
@@ -119,21 +119,21 @@ export default function ProfilePage() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-[#111] dark:text-white mb-2">
+                <label className="block text-sm font-medium text-text-heading dark:text-text-dark-h mb-2">
                   Display Name
                 </label>
                 <input
                   {...register('name')}
-                  className="w-full px-4 py-2.5 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl text-[#111] dark:text-white focus:outline-none focus:ring-2 focus:ring-[#6C63FF] transition-all"
+                  className="w-full px-4 py-2.5 bg-bg-2 dark:bg-bg-dark-2 border border-border dark:border-border-dark rounded-xl text-text-heading dark:text-text-dark-h focus:outline-none focus:ring-2 focus:ring-accent transition-all"
                 />
                 {errors.name && (
-                  <p className="text-[#FF5A5F] text-xs mt-1.5">
+                  <p className="text-danger text-xs mt-1.5">
                     {errors.name.message}
                   </p>
                 )}
               </div>
 
-              <div className="flex justify-end pt-4 border-t border-gray-100 dark:border-gray-800">
+              <div className="flex justify-end pt-4 border-t border-border dark:border-border-dark">
                 <Button
                   type="submit"
                   disabled={!isDirty || isUpdating}
@@ -154,8 +154,8 @@ export default function ProfilePage() {
           transition={{ delay: 0.1 }}
           className="card p-6 md:p-8"
         >
-          <h2 className="text-lg font-semibold text-[#111] dark:text-white flex items-center gap-2 mb-6">
-            <Settings className="w-5 h-5 text-[#6C63FF]" />
+          <h2 className="text-lg font-semibold text-text-heading dark:text-text-dark-h flex items-center gap-2 mb-6">
+            <Settings className="w-5 h-5 text-accent" />
             App Settings
           </h2>
           <div className="space-y-6">
@@ -173,19 +173,19 @@ export default function ProfilePage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="card p-6 md:p-8 border-[#FF5A5F]/20"
+          className="card p-6 md:p-8 border-danger/20"
         >
-          <h2 className="text-lg font-semibold text-[#111] dark:text-white flex items-center gap-2 mb-6">
-            <Shield className="w-5 h-5 text-[#FF5A5F]" />
+          <h2 className="text-lg font-semibold text-text-heading dark:text-text-dark-h flex items-center gap-2 mb-6">
+            <Shield className="w-5 h-5 text-danger" />
             Security
           </h2>
 
           <div className="flex items-center justify-between">
             <div>
-              <div className="font-medium text-[#111] dark:text-white mb-1">
+              <div className="font-medium text-text-heading dark:text-text-dark-h mb-1">
                 Log out of all devices
               </div>
-              <div className="text-sm text-[#5E5E5E] dark:text-gray-400">
+              <div className="text-sm text-text-muted dark:text-text-dark">
                 Invalidate all active sessions across all your devices.
               </div>
             </div>

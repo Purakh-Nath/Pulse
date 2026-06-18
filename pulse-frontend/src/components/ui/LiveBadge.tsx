@@ -8,15 +8,15 @@ interface LiveBadgeProps {
 }
 
 const variantStyles = {
-  red: 'bg-[#FF5A5F]/10 text-[#FF5A5F] border-[#FF5A5F]/20',
-  green: 'bg-[#3DDC97]/10 text-[#3DDC97] border-[#3DDC97]/20',
-  purple: 'bg-[#6C63FF]/10 text-[#6C63FF] border-[#6C63FF]/20',
+  red: 'bg-danger/10 text-danger border-danger/20',
+  green: 'bg-success/10 text-success border-success/20',
+  purple: 'bg-accent-bg text-accent border-accent-border',
 };
 
 const dotStyles = {
-  red: 'bg-[#FF5A5F]',
-  green: 'bg-[#3DDC97]',
-  purple: 'bg-[#6C63FF]',
+  red: 'bg-danger',
+  green: 'bg-success',
+  purple: 'bg-accent',
 };
 
 export function LiveBadge({

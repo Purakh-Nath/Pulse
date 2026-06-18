@@ -32,16 +32,16 @@ export function EmptyState({
           initial={{ scale: 0.8 }}
           animate={{ scale: 1 }}
           transition={{ type: 'spring', stiffness: 300, damping: 20, delay: 0.1 }}
-          className="mb-6 text-[#6C63FF]/40"
+          className="mb-6 text-accent/40"
         >
           {icon}
         </motion.div>
       )}
-      <h3 className="font-heading text-2xl font-semibold text-[#111] dark:text-white mb-2">
+      <h3 className="font-heading text-2xl font-semibold text-text-heading dark:text-text-dark-h mb-2">
         {title}
       </h3>
       {description && (
-        <p className="text-[#5E5E5E] dark:text-gray-400 max-w-xs text-sm leading-relaxed mb-6">
+        <p className="text-text-muted dark:text-text-dark max-w-xs text-sm leading-relaxed mb-6">
           {description}
         </p>
       )}

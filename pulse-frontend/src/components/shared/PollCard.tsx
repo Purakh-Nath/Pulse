@@ -17,23 +17,23 @@ import type { PollSummary } from '@/types/poll';
 const statusConfig = {
   draft: {
     label: 'Draft',
-    className: 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400',
+    className: 'bg-black/5 dark:bg-white/5 text-text-muted dark:text-text-dark',
   },
   published: {
     label: 'Published',
-    className: 'bg-[#6C63FF]/10 text-[#6C63FF]',
+    className: 'bg-accent-bg text-accent',
   },
   active: {
     label: 'Active',
-    className: 'bg-[#3DDC97]/10 text-[#3DDC97]',
+    className: 'bg-success/10 text-success',
   },
   expired: {
     label: 'Expired',
-    className: 'bg-[#FF5A5F]/10 text-[#FF5A5F]',
+    className: 'bg-danger/10 text-danger',
   },
   closed: {
     label: 'Closed',
-    className: 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400',
+    className: 'bg-black/5 dark:bg-white/5 text-text-muted dark:text-text-dark',
   },
 };
 
@@ -63,11 +63,11 @@ export function PollCard({ poll, index = 0 }: PollCardProps) {
       {/* Header */}
       <div className="flex items-start justify-between gap-3 mb-3">
         <div className="flex-1 min-w-0">
-          <h3 className="font-heading text-base font-semibold text-[#111] dark:text-white truncate mb-1 group-hover:text-[#6C63FF] transition-colors">
+          <h3 className="font-heading text-base font-semibold text-text-heading dark:text-text-dark-h truncate mb-1 group-hover:text-accent transition-colors">
             {poll.title}
           </h3>
           {poll.description && (
-            <p className="text-sm text-[#5E5E5E] dark:text-gray-400 line-clamp-2">
+            <p className="text-sm text-text-muted dark:text-text-dark line-clamp-2">
               {poll.description}
             </p>
           )}
@@ -75,7 +75,7 @@ export function PollCard({ poll, index = 0 }: PollCardProps) {
         <div className="flex items-center gap-2 shrink-0">
           {poll.status === 'active' && <LiveBadge />}
           {poll.publishResults && (
-            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-[#3DDC97]/10 text-[#3DDC97]">
+            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-success/10 text-success">
               <Globe className="w-3 h-3" />
               Published
             </span>
@@ -92,7 +92,7 @@ export function PollCard({ poll, index = 0 }: PollCardProps) {
       </div>
 
       {/* Stats */}
-      <div className="flex items-center gap-4 text-xs text-[#5E5E5E] dark:text-gray-400 mb-4">
+      <div className="flex items-center gap-4 text-xs text-text-muted dark:text-text-dark mb-4">
         <span className="flex items-center gap-1">
           <Users className="w-3.5 h-3.5" />
           {formatNumber(poll._count?.responses ?? 0)} responses
@@ -114,7 +114,7 @@ export function PollCard({ poll, index = 0 }: PollCardProps) {
               e.stopPropagation();
               navigate(`/dashboard/polls/${poll.slug}/analytics`);
             }}
-            className="flex items-center gap-1.5 text-xs text-[#6C63FF] hover:underline font-medium"
+            className="flex items-center gap-1.5 text-xs text-accent hover:underline font-medium"
           >
             <BarChart3 className="w-3.5 h-3.5" />
             Analytics
@@ -125,14 +125,14 @@ export function PollCard({ poll, index = 0 }: PollCardProps) {
                 e.stopPropagation();
                 window.open(`/poll/${poll.slug}`, '_blank');
               }}
-              className="flex items-center gap-1.5 text-xs text-[#5E5E5E] hover:text-[#111] dark:hover:text-white font-medium transition-colors"
+              className="flex items-center gap-1.5 text-xs text-text-muted hover:text-text-heading dark:hover:text-text-dark-h font-medium transition-colors"
             >
               <ExternalLink className="w-3.5 h-3.5" />
               Share
             </button>
           )}
         </div>
-        <ChevronRight className="w-4 h-4 text-gray-300 group-hover:text-[#6C63FF] transition-colors" />
+        <ChevronRight className="w-4 h-4 text-text-muted opacity-50 group-hover:opacity-100 group-hover:text-accent transition-all" />
       </div>
     </motion.div>
   );

@@ -6,26 +6,26 @@ export function PublicLayout() {
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
 
   return (
-    <div className="min-h-screen bg-[#F7F7F4] dark:bg-[#0F1115] flex flex-col">
+    <div className="min-h-screen bg-bg dark:bg-bg-dark flex flex-col">
       {/* Minimal header */}
-      <header className="sticky top-0 z-30 border-b border-black/[0.06] dark:border-white/[0.06] bg-white/80 dark:bg-[#171A21]/80 backdrop-blur-md">
+      <header className="sticky top-0 z-30 border-b border-border dark:border-border-dark bg-bg-2/80 dark:bg-bg-dark-2/80 backdrop-blur-md">
         <div className="max-w-3xl mx-auto px-4 h-14 flex items-center justify-between">
           <Link to="/" className="flex items-center">
-            <span className="font-heading font-extrabold text-2xl tracking-tighter text-[#111] dark:text-white">
+            <span className="font-heading font-extrabold text-2xl tracking-tighter text-text-heading dark:text-text-dark-h">
               Pulse
             </span>
           </Link>
           {isAuthenticated ? (
             <Link
               to="/dashboard"
-              className="text-sm font-medium text-[#6C63FF] hover:text-[#FF6B6B] transition-colors"
+              className="text-sm font-medium text-accent hover:text-accent-hover transition-colors"
             >
               Dashboard
             </Link>
           ) : (
             <Link
               to="/login"
-              className="text-sm font-medium text-[#5E5E5E] dark:text-gray-400 hover:text-[#6C63FF] transition-colors"
+              className="text-sm font-medium text-text-muted dark:text-text-dark hover:text-accent transition-colors"
             >
               Sign in
             </Link>
@@ -44,9 +44,9 @@ export function PublicLayout() {
         </motion.div>
       </main>
 
-      <footer className="py-6 text-center text-xs text-[#5E5E5E] dark:text-gray-500">
+      <footer className="py-6 text-center text-xs text-text-muted dark:text-text-dark">
         Powered by{' '}
-        <Link to="/" className="text-[#6C63FF] hover:underline">
+        <Link to="/" className="text-accent hover:underline">
           Pulse
         </Link>
       </footer>

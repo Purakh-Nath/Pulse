@@ -76,15 +76,15 @@ export default function PublicPollPage() {
     return (
       <div className="max-w-2xl mx-auto w-full pt-12 pb-24 px-4">
         <div className="mb-12 text-center">
-          <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#FF5A5F]/10 rounded-full text-xs font-medium text-[#FF5A5F] mb-6">
+          <div className="inline-flex items-center gap-2 px-3 py-1 bg-danger/10 rounded-full text-xs font-medium text-danger mb-6">
             <AlertCircle className="w-4 h-4" />
             {poll.status === 'closed' ? 'Closed' : 'Expired'}
           </div>
-          <h1 className="font-heading text-4xl font-bold text-[#111] dark:text-white mb-4 text-balance">
+          <h1 className="font-heading text-4xl font-bold text-text-heading dark:text-text-dark-h mb-4 text-balance">
             {poll.title}
           </h1>
           {poll.description && (
-            <p className="text-lg text-[#5E5E5E] dark:text-gray-400 text-balance mx-auto max-w-2xl mb-8">
+            <p className="text-lg text-text-muted dark:text-text-dark text-balance mx-auto max-w-2xl mb-8">
               {poll.description}
             </p>
           )}
@@ -92,17 +92,17 @@ export default function PublicPollPage() {
 
         <div className="card p-8 shadow-sm">
           <div className="mb-6 text-center">
-            <p className="text-[#111] dark:text-white text-lg font-semibold mb-2">
+            <p className="text-text-heading dark:text-text-dark-h text-lg font-semibold mb-2">
               Voting is closed for this poll.
             </p>
-            <p className="text-[#5E5E5E] dark:text-gray-400">
+            <p className="text-text-muted dark:text-text-dark">
               Final results are available below.
             </p>
           </div>
 
           {poll.responsesMode === 'authenticated' && !isAuthenticated ? (
             <div className="space-y-6">
-              <p className="text-[#5E5E5E] dark:text-gray-400">
+              <p className="text-text-muted dark:text-text-dark">
                 This poll requires sign in to view final results.
               </p>
               <Button
@@ -132,13 +132,13 @@ export default function PublicPollPage() {
     return (
       <div className="pt-20 max-w-md mx-auto">
         <div className="card p-8 text-center">
-          <div className="w-16 h-16 bg-[#6C63FF]/10 rounded-full flex items-center justify-center mx-auto mb-6">
-            <AlertCircle className="w-8 h-8 text-[#6C63FF]" />
+          <div className="w-16 h-16 bg-accent-bg rounded-full flex items-center justify-center mx-auto mb-6">
+            <AlertCircle className="w-8 h-8 text-accent" />
           </div>
-          <h2 className="font-heading text-2xl font-bold text-[#111] dark:text-white mb-2">
+          <h2 className="font-heading text-2xl font-bold text-text-heading dark:text-text-dark-h mb-2">
             Sign in required
           </h2>
-          <p className="text-[#5E5E5E] dark:text-gray-400 mb-8">
+          <p className="text-text-muted dark:text-text-dark mb-8">
             The creator of this poll requires participants to be signed in to vote.
           </p>
           <Button
@@ -167,14 +167,14 @@ export default function PublicPollPage() {
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
           transition={{ type: 'spring', delay: 0.2 }}
-          className="w-24 h-24 bg-[#3DDC97]/20 rounded-full flex items-center justify-center mx-auto mb-6"
+          className="w-24 h-24 bg-success/20 rounded-full flex items-center justify-center mx-auto mb-6"
         >
-          <CheckCircle2 className="w-12 h-12 text-[#3DDC97]" />
+          <CheckCircle2 className="w-12 h-12 text-success" />
         </motion.div>
-        <h2 className="font-heading text-3xl font-bold text-[#111] dark:text-white mb-3">
+        <h2 className="font-heading text-3xl font-bold text-text-heading dark:text-text-dark-h mb-3">
           Response recorded!
         </h2>
-        <p className="text-[#5E5E5E] dark:text-gray-400 mb-8">
+        <p className="text-text-muted dark:text-text-dark mb-8">
           Thank you for participating.
         </p>
         {!poll.publishResults && (
@@ -215,11 +215,11 @@ export default function PublicPollPage() {
     <div className="max-w-2xl mx-auto w-full pt-12 pb-24 px-4">
       {/* Header */}
       <div className="mb-12 text-center">
-        <h1 className="font-heading text-4xl font-bold text-[#111] dark:text-white mb-4 text-balance">
+        <h1 className="font-heading text-4xl font-bold text-text-heading dark:text-text-dark-h mb-4 text-balance">
           {poll.title}
         </h1>
         {poll.description && (
-          <p className="text-lg text-[#5E5E5E] dark:text-gray-400 text-balance">
+          <p className="text-lg text-text-muted dark:text-text-dark text-balance">
             {poll.description}
           </p>
         )}
@@ -227,13 +227,13 @@ export default function PublicPollPage() {
 
       {/* Progress */}
       <div className="mb-8">
-        <div className="flex justify-between text-xs font-medium text-[#5E5E5E] dark:text-gray-400 mb-2">
+        <div className="flex justify-between text-xs font-medium text-text-muted dark:text-text-dark mb-2">
           <span>Question {currentStep + 1} of {questions.length}</span>
           <span>{Math.round(progress)}% completed</span>
         </div>
         <div className="h-1.5 bg-gray-200 dark:bg-gray-800 rounded-full overflow-hidden">
           <motion.div
-            className="h-full bg-gradient-to-r from-[#6C63FF] to-[#FF6B6B]"
+            className="h-full bg-gradient-to-r from-accent to-accent-hover"
             initial={{ width: 0 }}
             animate={{ width: `${progress}%` }}
             transition={{ duration: 0.4 }}
@@ -251,10 +251,10 @@ export default function PublicPollPage() {
           transition={{ duration: 0.3 }}
           className="card p-6 sm:p-8"
         >
-          <h2 className="font-heading text-2xl font-semibold text-[#111] dark:text-white mb-6">
+          <h2 className="font-heading text-2xl font-semibold text-text-heading dark:text-text-dark-h mb-6">
             {currentQuestion.text}
             {currentQuestion.isRequired && (
-              <span className="text-[#FF5A5F] ml-1">*</span>
+              <span className="text-danger ml-1">*</span>
             )}
           </h2>
 
@@ -276,19 +276,19 @@ export default function PublicPollPage() {
                     className={cn(
                       'w-full flex items-center p-4 rounded-xl border-2 text-left transition-all duration-200',
                       isSelected
-                        ? 'border-[#6C63FF] bg-[#6C63FF]/5 shadow-glow-sm'
-                        : 'border-gray-200 dark:border-gray-700 hover:border-[#6C63FF]/50 bg-white dark:bg-[#1C1F28]'
+                        ? 'border-accent bg-accent-bg shadow-md'
+                        : 'border-border dark:border-border-dark hover:border-accent/50 bg-bg-2 dark:bg-bg-dark-2'
                     )}
                   >
-                    <div className="flex-1 text-[#111] dark:text-white font-medium">
+                    <div className="flex-1 text-text-heading dark:text-text-dark-h font-medium">
                       {option.text}
                     </div>
                     <div
                       className={cn(
                         'w-5 h-5 rounded-full border-2 ml-4 flex items-center justify-center shrink-0 transition-colors',
                         isSelected
-                          ? 'border-[#6C63FF] bg-[#6C63FF]'
-                          : 'border-gray-300 dark:border-gray-600'
+                          ? 'border-accent bg-accent'
+                          : 'border-border dark:border-border-dark'
                       )}
                     >
                       {isSelected && (

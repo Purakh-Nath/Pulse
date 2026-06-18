@@ -80,7 +80,7 @@ export function Modal({
                 <div className="flex items-center justify-between mb-6 px-6 pt-6">
                   <h2
                     id="modal-title"
-                    className="font-heading text-xl font-semibold text-[#111] dark:text-white"
+                    className="font-heading text-xl font-semibold text-text-heading dark:text-text-dark-h"
                   >
                     {title}
                   </h2>
@@ -89,7 +89,7 @@ export function Modal({
                     className="p-1.5 rounded-lg hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
                     aria-label="Close modal"
                   >
-                    <X className="w-4 h-4 text-[#5E5E5E]" />
+                    <X className="w-4 h-4 text-text-muted dark:text-text-dark" />
                   </button>
                 </div>
               )}

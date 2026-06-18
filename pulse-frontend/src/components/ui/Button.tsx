@@ -4,15 +4,15 @@ import { cn } from '@/lib/cn';
 
 const variants = {
   primary:
-    'bg-[#6C63FF] text-white hover:bg-[#5a52e0] active:scale-[0.98] shadow-glow-sm hover:shadow-glow',
+    'bg-accent text-white hover:bg-accent-hover active:scale-[0.98] shadow-sm hover:shadow-md',
   secondary:
-    'bg-white dark:bg-[#1C1F28] text-[#111] dark:text-white border border-black/10 dark:border-white/10 hover:bg-[#F0EFFE] dark:hover:bg-[#252836]',
+    'bg-bg dark:bg-bg-dark text-text-heading dark:text-text-dark-h border border-border dark:border-border-dark hover:bg-black/5 dark:hover:bg-white/5',
   ghost:
-    'text-[#111] dark:text-white hover:bg-black/5 dark:hover:bg-white/5',
+    'text-text-heading dark:text-text-dark-h hover:bg-black/5 dark:hover:bg-white/5',
   danger:
-    'bg-[#FF5A5F] text-white hover:bg-[#e5484d] active:scale-[0.98]',
+    'bg-danger text-white hover:bg-danger/80 active:scale-[0.98]',
   outline:
-    'border-2 border-[#6C63FF] text-[#6C63FF] hover:bg-[#6C63FF]/10',
+    'border-2 border-accent text-accent hover:bg-accent-bg',
 };
 
 const sizes = {
@@ -54,7 +54,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         className={cn(
           'inline-flex items-center justify-center font-medium transition-all duration-200 font-body select-none whitespace-nowrap gap-2',
           'disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none',
-          'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#6C63FF] focus-visible:ring-offset-2',
+          'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2',
           variants[variant],
           sizes[size],
           className,

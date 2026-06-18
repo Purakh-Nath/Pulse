@@ -74,7 +74,7 @@ export function CardTitle({
   return (
     <h3
       className={cn(
-        'font-heading text-lg font-semibold text-[#111] dark:text-white',
+        'font-heading text-lg font-semibold text-text-heading dark:text-text-dark-h',
         className,
       )}
     >

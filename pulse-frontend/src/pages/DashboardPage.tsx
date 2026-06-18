@@ -44,10 +44,10 @@ export default function DashboardPage() {
     <div className="max-w-6xl mx-auto">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
         <div>
-          <h1 className="font-heading text-3xl font-bold text-[#111] dark:text-white mb-1">
+          <h1 className="font-heading text-3xl font-bold text-text-heading dark:text-text-dark-h mb-1">
             Dashboard
           </h1>
-          <p className="text-[#5E5E5E] dark:text-gray-400">
+          <p className="text-text-muted dark:text-text-dark">
             Welcome back, {user?.name?.split(' ')[0]}. Here are your polls.
           </p>
         </div>
@@ -67,8 +67,8 @@ export default function DashboardPage() {
                 onClick={() => setStatusFilter(val)}
                 className={`px-4 py-1.5 rounded-full text-sm font-medium transition-colors whitespace-nowrap ${
                   isActive
-                    ? 'bg-[#111] dark:bg-white text-white dark:text-[#111]'
-                    : 'bg-white dark:bg-[#171A21] text-[#5E5E5E] dark:text-gray-400 border border-black/[0.08] dark:border-white/[0.08] hover:bg-gray-50 dark:hover:bg-gray-800'
+                    ? 'bg-text-heading dark:bg-text-dark-h text-bg dark:text-bg-dark'
+                    : 'bg-bg-2 dark:bg-bg-dark-2 text-text-muted dark:text-text-dark border border-border dark:border-border-dark hover:bg-black/5 dark:hover:bg-white/5'
                 }`}
               >
                 {filter}

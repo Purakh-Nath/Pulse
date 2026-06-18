@@ -64,9 +64,9 @@ const handleLogout = async () => {
     .slice(0, 2);
 
   return (
-    <div className="min-h-screen bg-[#F7F7F4] dark:bg-[#0F1115] flex">
+    <div className="min-h-screen bg-bg dark:bg-bg-dark flex">
       {/* Sidebar — desktop */}
-      <aside className="hidden lg:flex flex-col w-64 shrink-0 border-r border-black/[0.06] dark:border-white/[0.06] bg-white dark:bg-[#171A21] sticky top-0 h-screen">
+      <aside className="hidden lg:flex flex-col w-64 shrink-0 border-r border-border dark:border-border-dark bg-bg-2 dark:bg-bg-dark-2 sticky top-0 h-screen">
         <SidebarContent
           initials={initials ?? '?'}
           userName={user?.name ?? ''}
@@ -95,7 +95,7 @@ const handleLogout = async () => {
               animate={{ x: 0 }}
               exit={{ x: -280 }}
               transition={{ type: 'spring', stiffness: 400, damping: 35 }}
-              className="fixed left-0 top-0 bottom-0 z-50 w-64 bg-white dark:bg-[#171A21] flex flex-col lg:hidden"
+              className="fixed left-0 top-0 bottom-0 z-50 w-64 bg-bg-2 dark:bg-bg-dark-2 flex flex-col lg:hidden"
             >
               <SidebarContent
                 initials={initials ?? '?'}
@@ -114,16 +114,16 @@ const handleLogout = async () => {
       {/* Main */}
       <div className="flex-1 flex flex-col min-w-0">
         {/* Top bar — mobile */}
-        <header className="lg:hidden sticky top-0 z-30 flex items-center justify-between px-4 h-14 bg-white/80 dark:bg-[#171A21]/80 backdrop-blur-md border-b border-black/[0.06] dark:border-white/[0.06]">
+        <header className="lg:hidden sticky top-0 z-30 flex items-center justify-between px-4 h-14 bg-bg-2/80 dark:bg-bg-dark-2/80 backdrop-blur-md border-b border-border dark:border-border-dark">
           <button
             onClick={() => setMobileOpen(true)}
             className="p-2 rounded-lg hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
             aria-label="Open menu"
           >
-            <Menu className="w-5 h-5 text-[#111] dark:text-white" />
+            <Menu className="w-5 h-5 text-text-heading dark:text-text-dark-h" />
           </button>
           <div className="flex items-center">
-            <span className="font-heading font-extrabold text-xl tracking-tighter text-[#111] dark:text-white">
+            <span className="font-heading font-extrabold text-xl tracking-tighter text-text-heading dark:text-text-dark-h">
               Pulse
             </span>
           </div>
@@ -170,7 +170,7 @@ function SidebarContent({
       {/* Logo */}
       <div className="flex items-center justify-between mb-8 px-2 pt-2">
         <div className="flex items-center">
-          <span className="font-heading font-extrabold text-2xl tracking-tighter text-[#111] dark:text-white">
+          <span className="font-heading font-extrabold text-2xl tracking-tighter text-text-heading dark:text-text-dark-h">
             Pulse
           </span>
         </div>
@@ -197,8 +197,8 @@ function SidebarContent({
               cn(
                 'flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200',
                 isActive
-                  ? 'bg-[#6C63FF]/10 text-[#6C63FF]'
-                  : 'text-[#5E5E5E] dark:text-gray-400 hover:bg-black/5 dark:hover:bg-white/5 hover:text-[#111] dark:hover:text-white',
+                  ? 'bg-accent-bg text-accent'
+                  : 'text-text-muted dark:text-text-dark hover:bg-black/5 dark:hover:bg-white/5 hover:text-text-heading dark:hover:text-text-dark-h',
               )
             }
           >
@@ -209,10 +209,10 @@ function SidebarContent({
       </nav>
 
       {/* Bottom */}
-      <div className="space-y-1 pt-4 border-t border-black/[0.06] dark:border-white/[0.06]">
+      <div className="space-y-1 pt-4 border-t border-border dark:border-border-dark">
         <button
           onClick={onToggleTheme}
-          className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-[#5E5E5E] dark:text-gray-400 hover:bg-black/5 dark:hover:bg-white/5 hover:text-[#111] dark:hover:text-white transition-all"
+          className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-text-muted dark:text-text-dark hover:bg-black/5 dark:hover:bg-white/5 hover:text-text-heading dark:hover:text-text-dark-h transition-all"
         >
           {resolvedTheme === 'dark' ? (
             <Sun className="w-4 h-4" />
@@ -229,12 +229,12 @@ function SidebarContent({
             cn(
               'flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all',
               isActive
-                ? 'bg-[#6C63FF]/10 text-[#6C63FF]'
-                : 'text-[#5E5E5E] dark:text-gray-400 hover:bg-black/5 dark:hover:bg-white/5',
+                ? 'bg-accent-bg text-accent'
+                : 'text-text-muted dark:text-text-dark hover:bg-black/5 dark:hover:bg-white/5',
             )
           }
         >
-          <div className="w-6 h-6 rounded-full bg-gradient-to-br from-[#A0522D] to-[#CD853F] flex items-center justify-center text-white text-xs font-bold shrink-0 shadow-lg">
+          <div className="w-6 h-6 rounded-full bg-accent flex items-center justify-center text-white text-xs font-bold shrink-0 shadow-lg">
   {initials}
 </div>
 
@@ -243,7 +243,7 @@ function SidebarContent({
 
         <button
           onClick={onLogout}
-          className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-[#FF5A5F] hover:bg-[#FF5A5F]/10 transition-all"
+          className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-danger hover:bg-danger/10 transition-all"
         >
           <LogOut className="w-4 h-4 shrink-0" />
           Sign Out

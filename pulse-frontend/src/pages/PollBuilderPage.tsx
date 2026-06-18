@@ -140,7 +140,7 @@ export default function PollBuilderPage() {
   return (
     <div className="max-w-4xl mx-auto pb-24">
       {/* Header */}
-      <div className="flex items-center justify-between mb-8 sticky top-14 lg:top-0 bg-[#F7F7F4]/80 dark:bg-[#0F1115]/80 backdrop-blur-md py-4 z-20 -mx-4 px-4 lg:mx-0 lg:px-0">
+      <div className="flex items-center justify-between mb-8 sticky top-14 lg:top-0 bg-bg/80 dark:bg-bg-dark/80 backdrop-blur-md py-4 z-20 -mx-4 px-4 lg:mx-0 lg:px-0">
         <div className="flex items-center gap-4">
           <Button
             variant="ghost"
@@ -150,7 +150,7 @@ export default function PollBuilderPage() {
           >
             <ArrowLeft className="w-5 h-5" />
           </Button>
-          <h1 className="font-heading text-2xl font-bold text-[#111] dark:text-white">
+          <h1 className="font-heading text-2xl font-bold text-text-heading dark:text-text-dark-h">
             {pollId ? 'Edit Poll' : 'Create Poll'}
           </h1>
         </div>
@@ -180,16 +180,16 @@ export default function PollBuilderPage() {
             <input
               {...register('title')}
               placeholder="Poll Title"
-              className="w-full text-3xl font-heading font-bold bg-transparent border-none outline-none placeholder:text-gray-300 dark:placeholder:text-gray-700 text-[#111] dark:text-white mb-2"
+              className="w-full text-3xl font-heading font-bold bg-transparent border-none outline-none placeholder:text-gray-300 dark:placeholder:text-gray-700 text-text-heading dark:text-text-dark-h mb-2"
             />
             {errors.title && (
-              <p className="text-[#FF5A5F] text-sm mt-1">{errors.title.message}</p>
+              <p className="text-danger text-sm mt-1">{errors.title.message}</p>
             )}
             
             <textarea
               {...register('description')}
               placeholder="Add a description (optional)"
-              className="w-full text-sm bg-transparent border-none outline-none resize-none placeholder:text-gray-400 dark:placeholder:text-gray-600 text-[#5E5E5E] dark:text-gray-300 h-20"
+              className="w-full text-sm bg-transparent border-none outline-none resize-none placeholder:text-gray-400 dark:placeholder:text-gray-600 text-text-muted dark:text-text-dark h-20"
             />
           </div>
 
@@ -237,7 +237,7 @@ export default function PollBuilderPage() {
         {/* Settings Sidebar */}
         <div className="w-80 shrink-0 hidden md:block">
           <div className="card p-6 sticky top-32 space-y-6">
-            <div className="flex items-center gap-2 mb-4 text-[#111] dark:text-white font-heading font-semibold">
+            <div className="flex items-center gap-2 mb-4 text-text-heading dark:text-text-dark-h font-heading font-semibold">
               <Settings className="w-5 h-5" />
               Settings
             </div>
@@ -271,13 +271,13 @@ export default function PollBuilderPage() {
             />
 
             <div>
-              <label className="block text-sm font-medium text-[#111] dark:text-white mb-2">
+              <label className="block text-sm font-medium text-text-heading dark:text-text-dark-h mb-2">
                 Expiry Date (Required)
               </label>
               <input
                 type="datetime-local"
                 {...register('expiresAt')}
-                className="w-full px-3 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#6C63FF]"
+                className="w-full px-3 py-2 bg-bg-2 dark:bg-bg-dark-2 border border-border dark:border-border-dark rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-accent"
               />
             </div>
           </div>
@@ -321,7 +321,7 @@ function SortableQuestion({
       ref={setNodeRef}
       style={style}
       className={`card p-6 relative group ${
-        isDragging ? 'shadow-float ring-2 ring-[#6C63FF]' : ''
+        isDragging ? 'shadow-float ring-2 ring-accent' : ''
       }`}
     >
       <div
@@ -338,10 +338,10 @@ function SortableQuestion({
             <input
               {...register(`questions.${index}.text`)}
               placeholder="Question text"
-              className="w-full text-lg font-medium bg-transparent border-b border-transparent hover:border-gray-200 dark:hover:border-gray-700 focus:border-[#6C63FF] outline-none transition-colors pb-1 text-[#111] dark:text-white"
+              className="w-full text-lg font-medium bg-transparent border-b border-transparent hover:border-border dark:hover:border-border-dark focus:border-accent outline-none transition-colors pb-1 text-text-heading dark:text-text-dark-h"
             />
             {errors?.questions?.[index]?.text && (
-              <p className="text-[#FF5A5F] text-xs mt-1">
+              <p className="text-danger text-xs mt-1">
                 {errors.questions[index].text.message}
               </p>
             )}
@@ -349,7 +349,7 @@ function SortableQuestion({
           <button
             type="button"
             onClick={() => remove(index)}
-            className="p-2 text-gray-400 hover:text-[#FF5A5F] hover:bg-[#FF5A5F]/10 rounded-lg transition-colors"
+            className="p-2 text-gray-400 hover:text-danger hover:bg-danger/10 rounded-lg transition-colors"
           >
             <Trash2 className="w-4 h-4" />
           </button>
@@ -365,17 +365,17 @@ function SortableQuestion({
                 exit={{ opacity: 0, height: 0 }}
                 className="flex items-center gap-3"
               >
-                <div className="w-5 h-5 rounded-full border-2 border-gray-300 dark:border-gray-600 shrink-0" />
+                <div className="w-5 h-5 rounded-full border-2 border-border dark:border-border-dark shrink-0" />
                 <input
                   {...register(`questions.${index}.options.${oIndex}.text`)}
                   placeholder={`Option ${oIndex + 1}`}
-                  className="flex-1 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#6C63FF] text-[#111] dark:text-white"
+                  className="flex-1 bg-bg-2 dark:bg-bg-dark-2 border border-border dark:border-border-dark rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-accent text-text-heading dark:text-text-dark-h"
                 />
                 {fields.length > 2 && (
                   <button
                     type="button"
                     onClick={() => removeOption(oIndex)}
-                    className="p-1.5 text-gray-400 hover:text-[#FF5A5F] transition-colors"
+                    className="p-1.5 text-gray-400 hover:text-danger transition-colors"
                   >
                     <X className="w-4 h-4" />
                   </button>
@@ -384,7 +384,7 @@ function SortableQuestion({
             ))}
           </AnimatePresence>
           {errors?.questions?.[index]?.options && (
-              <p className="text-[#FF5A5F] text-xs mt-1">
+              <p className="text-danger text-xs mt-1">
                 {errors.questions[index].options.message}
               </p>
           )}
@@ -395,7 +395,7 @@ function SortableQuestion({
               <button
                 type="button"
                 onClick={() => append({ text: '' })}
-                className="text-sm font-medium text-[#6C63FF] hover:underline"
+                className="text-sm font-medium text-accent hover:underline"
               >
                 Add Option
               </button>
@@ -403,7 +403,7 @@ function SortableQuestion({
           )}
         </div>
 
-        <div className="mt-6 pt-4 border-t border-gray-100 dark:border-gray-800 flex justify-end">
+          <div className="mt-6 pt-4 border-t border-border dark:border-border-dark flex justify-end">
           <Controller
             name={`questions.${index}.isRequired`}
             control={control}

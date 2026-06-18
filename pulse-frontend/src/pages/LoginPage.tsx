@@ -9,10 +9,10 @@ export default function LoginPage() {
 
   return (
     <div>
-      <h1 className="font-heading text-3xl font-bold text-[#111] dark:text-white mb-2">
+      <h1 className="font-heading text-3xl font-bold text-text-heading dark:text-text-dark-h mb-2">
         Welcome back
       </h1>
-      <p className="text-[#5E5E5E] dark:text-gray-400 mb-8">
+      <p className="text-text-muted dark:text-text-dark mb-8">
         Sign in to your Pulse account to continue.
       </p>
 
@@ -45,27 +45,27 @@ export default function LoginPage() {
         Continue with Google
       </Button>
 
-      <div className="mt-8 p-4 bg-[#6C63FF]/5 rounded-xl border border-[#6C63FF]/10">
+      <div className="mt-8 p-4 bg-accent-bg rounded-xl border border-accent-border">
         <div className="flex gap-3">
-          <Shield className="w-4 h-4 text-[#6C63FF] shrink-0 mt-0.5" />
+          <Shield className="w-4 h-4 text-accent shrink-0 mt-0.5" />
           <div>
-            <p className="text-xs font-medium text-[#6C63FF] mb-0.5">
+            <p className="text-xs font-medium text-accent mb-0.5">
               Secure, private sign-in
             </p>
-            <p className="text-xs text-[#5E5E5E] dark:text-gray-400">
+            <p className="text-xs text-text-muted dark:text-text-dark">
               We use Google OAuth. We never see your password. Your session is managed via secure HTTP-only cookies.
             </p>
           </div>
         </div>
       </div>
 
-      <p className="text-xs text-center text-[#5E5E5E] dark:text-gray-400 mt-8">
+      <p className="text-xs text-center text-text-muted dark:text-text-dark mt-8">
         By continuing, you agree to our{' '}
-        <a href="#" className="text-[#6C63FF] hover:underline">
+        <a href="#" className="text-accent hover:underline">
           Terms of Service
         </a>{' '}
         and{' '}
-        <a href="#" className="text-[#6C63FF] hover:underline">
+        <a href="#" className="text-accent hover:underline">
           Privacy Policy
         </a>
         .

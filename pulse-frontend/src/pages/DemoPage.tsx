@@ -6,19 +6,19 @@ import { Button } from '@/components/ui/Button';
 const highlights = [
   {
     icon: Zap,
-    color: '#6C63FF',
+    color: 'var(--accent)',
     title: 'Build in seconds',
     body: 'Multi-question polls with expiry, access control, and instant sharing.',
   },
   {
     icon: BarChart3,
-    color: '#FF6B6B',
+    color: 'var(--accent)',
     title: 'Live analytics',
     body: 'Watch votes arrive in real-time with animated charts and counters.',
   },
   {
     icon: Share2,
-    color: '#00C2A8',
+    color: 'var(--accent)',
     title: 'Publish results',
     body: 'Share a beautiful public results page with anyone — no login needed.',
   },
@@ -79,12 +79,12 @@ export default function DemoPage() {
                 className="w-10 h-10 rounded-xl flex items-center justify-center mb-4"
                 style={{ backgroundColor: `${item.color}18` }}
               >
-                <item.icon className="w-5 h-5" style={{ color: item.color }} />
+                <item.icon className="w-5 h-5 text-accent" />
               </div>
-              <h3 className="font-heading text-base font-semibold text-[#111] dark:text-white mb-2">
+              <h3 className="font-heading text-base font-semibold text-text-heading dark:text-text-dark-h mb-2">
                 {item.title}
               </h3>
-              <p className="text-sm text-[#5E5E5E] dark:text-gray-400 leading-relaxed">
+              <p className="text-sm text-text-muted dark:text-text-dark leading-relaxed">
                 {item.body}
               </p>
             </motion.div>
@@ -98,7 +98,7 @@ export default function DemoPage() {
           transition={{ duration: 0.6, ease: 'easeOut' }}
           className="mt-16 text-center"
         >
-          <p className="font-heading text-2xl font-semibold text-[#111] dark:text-white mb-6">
+          <p className="font-heading text-2xl font-semibold text-text-heading dark:text-text-dark-h mb-6">
             Ready to run your own poll?
           </p>
           <motion.div

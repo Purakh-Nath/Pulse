@@ -55,10 +55,10 @@ export function ExpiryTimer({ expiresAt, className, onExpired }: ExpiryTimerProp
       className={cn(
         'inline-flex items-center gap-1.5 text-xs font-medium',
         expired
-          ? 'text-[#FF5A5F]'
+          ? 'text-danger'
           : isUrgent
-            ? 'text-[#FFB84D] animate-pulse'
-            : 'text-[#5E5E5E] dark:text-gray-400',
+            ? 'text-warning animate-pulse'
+            : 'text-text-muted dark:text-text-dark',
         className,
       )}
     >
