@@ -116,11 +116,8 @@ export default function LandingPage() {
       {/* Nav */}
       <header className="fixed top-0 left-0 right-0 z-50 border-b border-black/[0.06] dark:border-white/[0.06] bg-[#F7F7F4]/80 dark:bg-[#0F1115]/80 backdrop-blur-md">
         <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-gradient-to-br from-[#6C63FF] to-[#FF6B6B] rounded-xl flex items-center justify-center">
-              <Zap className="w-4 h-4 text-white" />
-            </div>
-            <span className="font-heading font-bold text-xl text-[#111] dark:text-white">
+          <div className="flex items-center">
+            <span className="font-heading font-extrabold text-3xl tracking-tighter text-[#111] dark:text-white">
               Pulse
             </span>
           </div>
@@ -434,11 +431,8 @@ export default function LandingPage() {
       {/* Footer */}
       <footer className="border-t border-black/[0.06] dark:border-white/[0.06] py-8">
         <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="w-6 h-6 bg-gradient-to-br from-[#6C63FF] to-[#FF6B6B] rounded-lg flex items-center justify-center">
-              <Zap className="w-3 h-3 text-white" />
-            </div>
-            <span className="font-heading font-bold text-[#111] dark:text-white text-sm">
+          <div className="flex items-center">
+            <span className="font-heading font-extrabold text-lg tracking-tight text-[#111] dark:text-white">
               Pulse
             </span>
           </div>
