@@ -7,7 +7,6 @@ import {
   Moon,
   Sun,
   LogOut,
-  Zap,
   Menu,
   X,
 } from 'lucide-react';
@@ -123,9 +122,8 @@ const handleLogout = async () => {
           >
             <Menu className="w-5 h-5 text-[#111] dark:text-white" />
           </button>
-          <div className="flex items-center gap-1.5">
-            <Zap className="w-4 h-4 text-[#6C63FF]" />
-            <span className="font-heading font-bold text-[#111] dark:text-white">
+          <div className="flex items-center">
+            <span className="font-heading font-extrabold text-xl tracking-tighter text-[#111] dark:text-white">
               Pulse
             </span>
           </div>
@@ -171,11 +169,8 @@ function SidebarContent({
     <div className="flex flex-col h-full p-4">
       {/* Logo */}
       <div className="flex items-center justify-between mb-8 px-2 pt-2">
-        <div className="flex items-center gap-2">
-          <div className="w-8 h-8 bg-gradient-to-br from-[#6C63FF] to-[#FF6B6B] rounded-xl flex items-center justify-center">
-            <Zap className="w-4 h-4 text-white" />
-          </div>
-          <span className="font-heading font-bold text-lg text-[#111] dark:text-white">
+        <div className="flex items-center">
+          <span className="font-heading font-extrabold text-2xl tracking-tighter text-[#111] dark:text-white">
             Pulse
           </span>
         </div>

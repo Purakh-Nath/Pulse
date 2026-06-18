@@ -1,4 +1,4 @@
-import { Zap } from 'lucide-react';
+import { Shield } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { authService } from '@/api/auth';
 
@@ -47,7 +47,7 @@ export default function LoginPage() {
 
       <div className="mt-8 p-4 bg-[#6C63FF]/5 rounded-xl border border-[#6C63FF]/10">
         <div className="flex gap-3">
-          <Zap className="w-4 h-4 text-[#6C63FF] shrink-0 mt-0.5" />
+          <Shield className="w-4 h-4 text-[#6C63FF] shrink-0 mt-0.5" />
           <div>
             <p className="text-xs font-medium text-[#6C63FF] mb-0.5">
               Secure, private sign-in

@@ -1,5 +1,4 @@
 import { Outlet, Link } from 'react-router-dom';
-import { Zap } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useAuthStore } from '@/stores/authStore';
 
@@ -11,11 +10,8 @@ export function PublicLayout() {
       {/* Minimal header */}
       <header className="sticky top-0 z-30 border-b border-black/[0.06] dark:border-white/[0.06] bg-white/80 dark:bg-[#171A21]/80 backdrop-blur-md">
         <div className="max-w-3xl mx-auto px-4 h-14 flex items-center justify-between">
-          <Link to="/" className="flex items-center gap-2">
-            <div className="w-7 h-7 bg-gradient-to-br from-[#6C63FF] to-[#FF6B6B] rounded-lg flex items-center justify-center">
-              <Zap className="w-3.5 h-3.5 text-white" />
-            </div>
-            <span className="font-heading font-bold text-[#111] dark:text-white">
+          <Link to="/" className="flex items-center">
+            <span className="font-heading font-extrabold text-2xl tracking-tighter text-[#111] dark:text-white">
               Pulse
             </span>
           </Link>

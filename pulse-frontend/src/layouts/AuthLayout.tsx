@@ -1,6 +1,5 @@
 import { Outlet } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Zap } from 'lucide-react';
 
 export function AuthLayout() {
   return (
@@ -131,13 +130,10 @@ export function AuthLayout() {
 
         {/* Logo */}
         <div className="relative z-10 flex items-center gap-3">
-          <div className="logo-ring">
-            <div className="logo-inner">
-              <Zap size={18} style={{ color: '#818cf8' }} />
-            </div>
-          </div>
-          <span style={{ fontFamily: "'Syne', sans-serif", fontWeight: 800, fontSize: 22, color: '#fff', letterSpacing: '-0.02em' }}>Pulse</span>
-          <span className="stat-badge" style={{ marginLeft: 8 }}>BETA</span>
+          <span className="font-heading font-extrabold text-3xl tracking-tighter text-white">
+            Pulse
+          </span>
+          <span className="stat-badge">BETA</span>
         </div>
 
         {/* Hero Copy */}
@@ -215,13 +211,10 @@ export function AuthLayout() {
           className="w-full max-w-sm relative z-10"
         >
           {/* Mobile logo */}
-          <div className="lg:hidden flex items-center gap-2 mb-10">
-            <div className="logo-ring">
-              <div className="logo-inner" style={{ width: 32, height: 32, borderRadius: 10 }}>
-                <Zap size={14} style={{ color: '#818cf8' }} />
-              </div>
-            </div>
-            <span style={{ fontFamily: "'Syne', sans-serif", fontWeight: 800, fontSize: 20, color: '#fff' }}>Pulse</span>
+          <div className="lg:hidden flex items-center mb-10">
+            <span className="font-heading font-extrabold text-2xl tracking-tighter text-white">
+              Pulse
+            </span>
           </div>
           <Outlet />
         </motion.div>
