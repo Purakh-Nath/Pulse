@@ -7,7 +7,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {DndContext,closestCenter,KeyboardSensor,PointerSensor,useSensor,useSensors,type DragEndEvent,} from '@dnd-kit/core';
 import {SortableContext,sortableKeyboardCoordinates,verticalListSortingStrategy,useSortable,} from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { Plus, Trash2, GripVertical, Settings, ArrowLeft, Save, Send } from 'lucide-react';
+import { useQuery } from '@tanstack/react-query';
+import { Plus, Trash2, GripVertical, Settings, ArrowLeft, Save, Send, Info } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { ToggleSwitch } from '@/components/ui/ToggleSwitch';
 import { Drawer } from '@/components/ui/Drawer';
@@ -69,11 +70,18 @@ export default function PollBuilderPage() {
   };
   const initialExpiry = getDefaultExpiry();
 
+  const { data: existingPoll } = useQuery({
+    queryKey: ['poll', pollId],
+    queryFn: () => pollsService.getPollById(pollId!),
+    enabled: !!pollId,
+  });
+
   const {
     register,
     control,
     handleSubmit,
     watch,
+    reset,
     formState: { errors },
   } = useForm<PollFormValues>({
     resolver: zodResolver(pollSchema),
@@ -97,6 +105,24 @@ export default function PollBuilderPage() {
     control,
     name: 'questions',
   });
+
+  useEffect(() => {
+    if (existingPoll) {
+      reset({
+        title: existingPoll.title,
+        description: existingPoll.description || '',
+        responsesMode: existingPoll.responsesMode,
+        publishResults: existingPoll.publishResults,
+        expiresAt: existingPoll.expiresAt
+          ? new Date(existingPoll.expiresAt).toISOString().slice(0, 16)
+          : initialExpiry,
+        questions: existingPoll.questions.map((q) => ({
+          ...q,
+          options: q.options.map((o) => ({ ...o })),
+        })),
+      });
+    }
+  }, [existingPoll, reset, initialExpiry]);
 
   // Calculate active settings indicator
   const responsesMode = watch('responsesMode');
@@ -134,7 +160,7 @@ export default function PollBuilderPage() {
       // Map displayOrder
       const payload = {
         ...data,
-        status: (publish ? 'published' : 'draft') as any,
+        status: (publish ? 'active' : 'draft') as any,
         expiresAt: data.expiresAt 
     ? new Date(data.expiresAt).toISOString()  // utc
     : undefined,
@@ -148,13 +174,25 @@ export default function PollBuilderPage() {
         })),
       };
 
-      const poll = await pollsService.createPoll(payload);
+      let poll;
+      if (pollId) {
+        poll = await pollsService.updatePoll(pollId, {
+          title: payload.title,
+          description: payload.description,
+          responsesMode: payload.responsesMode,
+          publishResults: payload.publishResults,
+          expiresAt: payload.expiresAt,
+          status: publish ? 'active' : undefined,
+        });
+      } else {
+        poll = await pollsService.createPoll(payload);
+      }
 
       if (publish) {
         toast.success('Poll published successfully! Redirecting to live analytics...');
         navigate(`/dashboard/polls/${poll.slug}/analytics`);
       } else {
-        toast.success('Draft saved successfully!');
+        toast.success(pollId ? 'Changes saved successfully!' : 'Draft saved successfully!');
         navigate('/dashboard');
       }
     } catch (error: any) {
@@ -203,15 +241,17 @@ export default function PollBuilderPage() {
               disabled={isSubmitting}
               icon={<Save className="w-4 h-4" />}
             >
-              Save Draft
+              {pollId ? 'Save Changes' : 'Save Draft'}
             </Button>
-            <Button
-              onClick={handleSubmit((data) => onSubmit(data, true))}
-              loading={isSubmitting}
-              icon={<Send className="w-4 h-4" />}
-            >
-              Publish
-            </Button>
+            {(!pollId || existingPoll?.status === 'draft') && (
+              <Button
+                onClick={handleSubmit((data) => onSubmit(data, true))}
+                loading={isSubmitting}
+                icon={<Send className="w-4 h-4" />}
+              >
+                Publish
+              </Button>
+            )}
           </div>
         </div>
       </div>
@@ -219,6 +259,15 @@ export default function PollBuilderPage() {
       <div className="flex gap-6">
         {/* Main Form */}
         <div className="flex-1 space-y-6">
+          {pollId && (
+            <div className="p-4 rounded-xl bg-accent/10 border border-accent/20 text-accent text-sm flex items-start gap-3">
+              <Info className="w-5 h-5 shrink-0 mt-0.5" />
+              <p>
+                <strong>Edit Mode:</strong> You are editing an existing poll's settings. 
+                Questions and options cannot be modified to maintain data integrity.
+              </p>
+            </div>
+          )}
           <div className="card p-6">
             <input
               {...register('title')}
@@ -255,26 +304,29 @@ export default function PollBuilderPage() {
                     control={control}
                     remove={remove}
                     errors={errors}
+                    isReadOnly={!!pollId}
                   />
                 ))}
               </div>
             </SortableContext>
           </DndContext>
 
-          <Button
-            variant="secondary"
-            className="w-full py-6 border-dashed border-2"
-            onClick={() =>
-              append({
-                text: '',
-                isRequired: true,
-                options: [{ text: '' }, { text: '' }],
-              })
-            }
-            icon={<Plus className="w-5 h-5" />}
-          >
-            Add Question
-          </Button>
+          {!pollId && (
+            <Button
+              variant="secondary"
+              className="w-full py-6 border-dashed border-2"
+              onClick={() =>
+                append({
+                  text: '',
+                  isRequired: true,
+                  options: [{ text: '' }, { text: '' }],
+                })
+              }
+              icon={<Plus className="w-5 h-5" />}
+            >
+              Add Question
+            </Button>
+          )}
         </div>
 
         {/* Settings Sidebar - Desktop Only */}
@@ -323,15 +375,17 @@ export default function PollBuilderPage() {
           disabled={isSubmitting}
           className="flex-1"
         >
-          Save Draft
+          {pollId ? 'Save Changes' : 'Save Draft'}
         </Button>
-        <Button
-          onClick={handleSubmit((data) => onSubmit(data, true))}
-          loading={isSubmitting}
-          className="flex-1"
-        >
-          Publish
-        </Button>
+        {(!pollId || existingPoll?.status === 'draft') && (
+          <Button
+            onClick={handleSubmit((data) => onSubmit(data, true))}
+            loading={isSubmitting}
+            className="flex-1"
+          >
+            Publish
+          </Button>
+        )}
       </div>
     </div>
   );
@@ -345,6 +399,7 @@ function SortableQuestion({
   control,
   remove,
   errors,
+  isReadOnly,
 }: any) {
   const {
     attributes,
@@ -374,21 +429,24 @@ function SortableQuestion({
         isDragging ? 'shadow-float ring-2 ring-accent' : ''
       }`}
     >
-      <div
-        className="absolute left-2 top-1/2 -translate-y-1/2 p-2 cursor-grab active:cursor-grabbing text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 opacity-0 group-hover:opacity-100 transition-opacity"
-        {...attributes}
-        {...listeners}
-      >
-        <GripVertical className="w-5 h-5" />
-      </div>
+      {!isReadOnly && (
+        <div
+          className="absolute left-2 top-1/2 -translate-y-1/2 p-2 cursor-grab active:cursor-grabbing text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 opacity-0 group-hover:opacity-100 transition-opacity"
+          {...attributes}
+          {...listeners}
+        >
+          <GripVertical className="w-5 h-5" />
+        </div>
+      )}
 
       <div className="pl-6">
         <div className="flex items-start justify-between gap-4 mb-4">
           <div className="flex-1">
             <input
               {...register(`questions.${index}.text`)}
+              disabled={isReadOnly}
               placeholder="Question text"
-              className="w-full text-lg font-medium bg-transparent border-b border-transparent hover:border-border dark:hover:border-border-dark focus:border-accent outline-none transition-colors pb-1 text-text-heading dark:text-text-dark-h"
+              className="w-full text-lg font-medium bg-transparent border-b border-transparent hover:border-border dark:hover:border-border-dark focus:border-accent outline-none transition-colors pb-1 text-text-heading dark:text-text-dark-h disabled:opacity-70 disabled:hover:border-transparent"
             />
             {errors?.questions?.[index]?.text && (
               <p className="text-danger text-xs mt-1">
@@ -396,13 +454,15 @@ function SortableQuestion({
               </p>
             )}
           </div>
-          <button
-            type="button"
-            onClick={() => remove(index)}
-            className="p-2 text-gray-400 hover:text-danger hover:bg-danger/10 rounded-lg transition-colors"
-          >
-            <Trash2 className="w-4 h-4" />
-          </button>
+          {!isReadOnly && (
+            <button
+              type="button"
+              onClick={() => remove(index)}
+              className="p-2 text-gray-400 hover:text-danger hover:bg-danger/10 rounded-lg transition-colors"
+            >
+              <Trash2 className="w-4 h-4" />
+            </button>
+          )}
         </div>
 
         <div className="space-y-3">
@@ -418,10 +478,11 @@ function SortableQuestion({
                 <div className="w-5 h-5 rounded-full border-2 border-border dark:border-border-dark shrink-0" />
                 <input
                   {...register(`questions.${index}.options.${oIndex}.text`)}
+                  disabled={isReadOnly}
                   placeholder={`Option ${oIndex + 1}`}
-                  className="flex-1 bg-bg-2 dark:bg-bg-dark-2 border border-border dark:border-border-dark rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-accent text-text-heading dark:text-text-dark-h"
+                  className="flex-1 bg-bg-2 dark:bg-bg-dark-2 border border-border dark:border-border-dark rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-accent text-text-heading dark:text-text-dark-h disabled:opacity-70"
                 />
-                {fields.length > 2 && (
+                {!isReadOnly && fields.length > 2 && (
                   <button
                     type="button"
                     onClick={() => removeOption(oIndex)}
@@ -439,7 +500,7 @@ function SortableQuestion({
               </p>
           )}
 
-          {fields.length < POLL_LIMITS.MAX_OPTIONS && (
+          {!isReadOnly && fields.length < POLL_LIMITS.MAX_OPTIONS && (
             <div className="flex items-center gap-3 pt-2">
               <div className="w-5 h-5 shrink-0" />
               <button
@@ -453,14 +514,14 @@ function SortableQuestion({
           )}
         </div>
 
-          <div className="mt-6 pt-4 border-t border-border dark:border-border-dark flex justify-end">
+        <div className="mt-6 pt-4 border-t border-border dark:border-border-dark flex justify-end">
           <Controller
             name={`questions.${index}.isRequired`}
             control={control}
             render={({ field }) => (
               <ToggleSwitch
                 checked={field.value}
-                onChange={field.onChange}
+                onChange={isReadOnly ? () => {} : field.onChange}
                 label="Response required ?"
               />
             )}
