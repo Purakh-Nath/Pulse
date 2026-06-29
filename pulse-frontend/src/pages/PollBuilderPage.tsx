@@ -15,6 +15,7 @@ import { Drawer } from '@/components/ui/Drawer';
 import { PollSettings } from '@/components/shared/PollSettings';
 import { pollsService } from '@/api/polls';
 import toast from 'react-hot-toast';
+import TextareaAutosize from 'react-textarea-autosize';
 import { POLL_LIMITS } from '@/config/constants';
 
 // Zod Schema
@@ -328,10 +329,11 @@ export default function PollBuilderPage() {
           )}
 
           <div className="card p-6">
-            <input
+            <TextareaAutosize
               {...register('title')}
+              minRows={1}
               placeholder="Poll Title"
-              className="w-full text-3xl font-heading font-bold bg-transparent border-none outline-none placeholder:text-gray-300 dark:placeholder:text-gray-700 text-text-heading dark:text-text-dark-h mb-2"
+              className="w-full text-3xl font-heading font-bold bg-transparent border-none outline-none resize-none overflow-hidden placeholder:text-gray-300 dark:placeholder:text-gray-700 text-text-heading dark:text-text-dark-h mb-2"
             />
             {errors.title && (
               <p className="text-danger text-sm mt-1">{errors.title.message}</p>
@@ -501,11 +503,12 @@ function SortableQuestion({
       <div className="pl-6">
         <div className="flex items-start justify-between gap-4 mb-4">
           <div className="flex-1">
-            <input
+            <TextareaAutosize
               {...register(`questions.${index}.text`)}
               disabled={isReadOnly}
+              minRows={1}
               placeholder="Question text"
-              className="w-full text-lg font-medium bg-transparent border-b border-transparent hover:border-border dark:hover:border-border-dark focus:border-accent outline-none transition-colors pb-1 text-text-heading dark:text-text-dark-h disabled:opacity-70 disabled:hover:border-transparent"
+              className="w-full text-lg font-medium bg-transparent border-b border-transparent hover:border-border dark:hover:border-border-dark focus:border-accent outline-none transition-colors pb-1 text-text-heading dark:text-text-dark-h disabled:opacity-70 disabled:hover:border-transparent resize-none overflow-hidden"
             />
             {errors?.questions?.[index]?.text && (
               <p className="text-danger text-xs mt-1">
@@ -534,12 +537,13 @@ function SortableQuestion({
                 exit={{ opacity: 0, height: 0 }}
                 className="flex items-center gap-3"
               >
-                <div className="w-5 h-5 rounded-full border-2 border-border dark:border-border-dark shrink-0" />
-                <input
+                <div className="w-5 h-5 rounded-full border-2 border-border dark:border-border-dark shrink-0 mt-1" />
+                <TextareaAutosize
                   {...register(`questions.${index}.options.${oIndex}.text`)}
                   disabled={isReadOnly}
+                  minRows={1}
                   placeholder={`Option ${oIndex + 1}`}
-                  className="flex-1 bg-bg-2 dark:bg-bg-dark-2 border border-border dark:border-border-dark rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-accent text-text-heading dark:text-text-dark-h disabled:opacity-70"
+                  className="flex-1 bg-bg-2 dark:bg-bg-dark-2 border border-border dark:border-border-dark rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-accent text-text-heading dark:text-text-dark-h disabled:opacity-70 resize-none overflow-hidden"
                 />
                 {!isReadOnly && fields.length > 2 && (
                   <button
