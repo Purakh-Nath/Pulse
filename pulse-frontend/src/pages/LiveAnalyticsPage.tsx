@@ -9,7 +9,6 @@ import {
   ArrowLeft,
   Share2,
   ExternalLink,
-  Settings,
   BarChart3,
   X,
   Copy,
