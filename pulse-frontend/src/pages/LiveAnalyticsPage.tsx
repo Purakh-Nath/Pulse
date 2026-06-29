@@ -16,6 +16,8 @@ import {
   Check,
   Globe,
   Send,
+  Pencil,
+  Trash2,
 } from 'lucide-react';
 import {
   BarChart,
@@ -41,9 +43,11 @@ import { LiveBadge } from '@/components/ui/LiveBadge';
 import { AnalyticsSkeleton } from '@/components/ui/Skeleton';
 import { ANALYTICS_DELAY_MS, APP_URL, CHART_COLORS } from '@/config/constants';
 import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
 
 export default function LiveAnalyticsPage() {
   const { slug } = useParams();
+  const navigate = useNavigate();
   const queryClient = useQueryClient();
   const user = useAuthStore((s) => s.user);
 
@@ -138,6 +142,18 @@ export default function LiveAnalyticsPage() {
     setTimeout(() => setLinkCopied(false), 2000);
   };
 
+  const handleDelete = async () => {
+    if (!window.confirm('Are you sure you want to delete this poll? This action cannot be undone.')) return;
+    try {
+      await pollsService.deletePoll(poll.id);
+      toast.success('Poll deleted successfully');
+      queryClient.invalidateQueries({ queryKey: ['polls'] });
+      navigate('/dashboard');
+    } catch {
+      toast.error('Failed to delete poll');
+    }
+  };
+
   return (
     <div className="max-w-5xl mx-auto pb-24">
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8">
@@ -202,9 +218,6 @@ export default function LiveAnalyticsPage() {
                   {publishing ? 'Publishing…' : 'Publish Results'}
                 </Button>
               )}
-              <Button variant="secondary" icon={<Settings className="w-4 h-4" />}>
-                Settings
-              </Button>
               <Button
                 onClick={handleShare}
                 icon={<Share2 className="w-4 h-4" />}
@@ -220,6 +233,21 @@ export default function LiveAnalyticsPage() {
               </Button>
             </>
           )}
+          <Button 
+            variant="secondary" 
+            icon={<Pencil className="w-4 h-4" />}
+            onClick={() => navigate(`/dashboard/polls/${poll.id}/edit`)}
+          >
+            Edit Settings
+          </Button>
+          <Button 
+            variant="outline"
+            className="text-danger border-danger/20 hover:bg-danger/10"
+            icon={<Trash2 className="w-4 h-4" />}
+            onClick={handleDelete}
+          >
+            Delete
+          </Button>
         </div>
       </div>
 
