@@ -15,6 +15,7 @@ import {
   Copy,
   Check,
   Globe,
+  Send,
 } from 'lucide-react';
 import {
   BarChart,
@@ -32,6 +33,7 @@ import { useRealtimeAnalytics } from '@/hooks/useRealtimeAnalytics';
 import { useSocketRoom } from '@/hooks/useSocketRoom';
 import { useAuthStore } from '@/stores/authStore';
 import { analyticsService } from '@/api/analytics';
+import { pollsService } from '@/api/polls';
 import { queryKeys } from '@/config/queryKeys';
 import { Button } from '@/components/ui/Button';
 import { AnimatedCounter } from '@/components/ui/AnimatedCounter';
@@ -51,6 +53,7 @@ export default function LiveAnalyticsPage() {
   );
 
   const [publishing, setPublishing] = useState(false);
+  const [activating, setActivating] = useState(false);
   const [showPublishedModal, setShowPublishedModal] = useState(false);
   const [isPublished, setIsPublished] = useState<boolean | null>(null);
   const [linkCopied, setLinkCopied] = useState(false);
@@ -115,6 +118,20 @@ export default function LiveAnalyticsPage() {
     }
   };
 
+  const handleActivate = async () => {
+    if (activating) return;
+    setActivating(true);
+    try {
+      await pollsService.activatePoll(poll.id);
+      toast.success('Poll published successfully!');
+      queryClient.invalidateQueries({ queryKey: ['poll'] });
+    } catch {
+      toast.error('Failed to publish poll. Please try again.');
+    } finally {
+      setActivating(false);
+    }
+  };
+
   const handleCopyResultsLink = () => {
     navigator.clipboard.writeText(resultsUrl);
     setLinkCopied(true);
@@ -139,6 +156,11 @@ export default function LiveAnalyticsPage() {
             {poll.status === 'active' && !isExpired && (
               <LiveBadge variant="purple" />
             )}
+            {poll.status === 'draft' && (
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-black/5 dark:bg-white/5 text-text-muted dark:text-text-dark">
+                Draft
+              </span>
+            )}
             {isExpired && <LiveBadge variant="red" label="EXPIRED" />}
             {pollIsPublished && (
               <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-success/10 text-success">
@@ -152,40 +174,52 @@ export default function LiveAnalyticsPage() {
           </p>
         </div>
         <div className="flex items-center gap-3 shrink-0 flex-wrap">
-          {pollIsPublished ? (
+          {poll.status === 'draft' ? (
             <Button
-              variant="secondary"
-              icon={<Globe className="w-4 h-4" />}
-              onClick={() => setShowPublishedModal(true)}
+              onClick={handleActivate}
+              loading={activating}
+              icon={<Send className="w-4 h-4" />}
             >
-              View Results Link
+              Publish Poll
             </Button>
           ) : (
-            <Button
-              variant="secondary"
-              icon={<BarChart3 className="w-4 h-4" />}
-              onClick={handlePublish}
-              disabled={publishing}
-            >
-              {publishing ? 'Publishing…' : 'Publish Results'}
-            </Button>
+            <>
+              {pollIsPublished ? (
+                <Button
+                  variant="secondary"
+                  icon={<Globe className="w-4 h-4" />}
+                  onClick={() => setShowPublishedModal(true)}
+                >
+                  View Results Link
+                </Button>
+              ) : (
+                <Button
+                  variant="secondary"
+                  icon={<BarChart3 className="w-4 h-4" />}
+                  onClick={handlePublish}
+                  disabled={publishing}
+                >
+                  {publishing ? 'Publishing…' : 'Publish Results'}
+                </Button>
+              )}
+              <Button variant="secondary" icon={<Settings className="w-4 h-4" />}>
+                Settings
+              </Button>
+              <Button
+                onClick={handleShare}
+                icon={<Share2 className="w-4 h-4" />}
+                variant="outline"
+              >
+                Share Link
+              </Button>
+              <Button
+                onClick={() => window.open(`/poll/${poll.slug}`, '_blank')}
+                icon={<ExternalLink className="w-4 h-4" />}
+              >
+                View Live
+              </Button>
+            </>
           )}
-          <Button variant="secondary" icon={<Settings className="w-4 h-4" />}>
-            Settings
-          </Button>
-          <Button
-            onClick={handleShare}
-            icon={<Share2 className="w-4 h-4" />}
-            variant="outline"
-          >
-            Share Link
-          </Button>
-          <Button
-            onClick={() => window.open(`/poll/${poll.slug}`, '_blank')}
-            icon={<ExternalLink className="w-4 h-4" />}
-          >
-            View Live
-          </Button>
         </div>
       </div>
 
