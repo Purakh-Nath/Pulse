@@ -34,6 +34,13 @@ export async function createPoll(
 
   const isActive = input.status === 'active' || input.status === 'published';
 
+  let expiresAt = input.expiresAt;
+  if (!expiresAt) {
+    const defaultExpiry = new Date();
+    defaultExpiry.setHours(defaultExpiry.getHours() + 12);
+    expiresAt = defaultExpiry as any; // Allow Date or whatever input.expiresAt type is
+  }
+
   const [poll] = await db.insert(schema.polls).values({
     slug,
     ownerId,
@@ -41,7 +48,7 @@ export async function createPoll(
     description: input.description,
     responsesMode: input.responsesMode,
     publishResults: false,
-    expiresAt: input.expiresAt,
+    expiresAt,
     status: isActive ? 'active' : 'draft',
     publishedAt: null,
   }).returning();
