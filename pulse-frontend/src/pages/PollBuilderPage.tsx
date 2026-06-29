@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useForm, useFieldArray, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -7,9 +7,11 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {DndContext,closestCenter,KeyboardSensor,PointerSensor,useSensor,useSensors,type DragEndEvent,} from '@dnd-kit/core';
 import {SortableContext,sortableKeyboardCoordinates,verticalListSortingStrategy,useSortable,} from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import {Plus,Trash2,GripVertical,Settings,ArrowLeft,Save,Send,} from 'lucide-react';
+import { Plus, Trash2, GripVertical, Settings, ArrowLeft, Save, Send } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { ToggleSwitch } from '@/components/ui/ToggleSwitch';
+import { Drawer } from '@/components/ui/Drawer';
+import { PollSettings } from '@/components/shared/PollSettings';
 import { pollsService } from '@/api/polls';
 import toast from 'react-hot-toast';
 import { POLL_LIMITS } from '@/config/constants';
@@ -50,14 +52,28 @@ export default function PollBuilderPage() {
   const { pollId } = useParams();
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
-  // If pollId exists, we'd normally fetch it. For now, creating new.
-  // const { data: existingPoll, isLoading } = usePoll(pollId ?? '');
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  // Pre-fill expiry to 12 hours from now in local time
+  const getDefaultExpiry = () => {
+    const defaultExpiry = new Date(Date.now() + 12 * 60 * 60 * 1000);
+    const tzOffset = defaultExpiry.getTimezoneOffset() * 60000;
+    return new Date(defaultExpiry.getTime() - tzOffset).toISOString().slice(0, 16);
+  };
+  const initialExpiry = getDefaultExpiry();
 
   const {
     register,
     control,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm<PollFormValues>({
     resolver: zodResolver(pollSchema),
@@ -66,6 +82,7 @@ export default function PollBuilderPage() {
       description: '',
       responsesMode: 'anonymous',
       publishResults: false,
+      expiresAt: initialExpiry,
       questions: [
         {
           text: '',
@@ -80,6 +97,16 @@ export default function PollBuilderPage() {
     control,
     name: 'questions',
   });
+
+  // Calculate active settings indicator
+  const responsesMode = watch('responsesMode');
+  const publishResults = watch('publishResults');
+  const expiresAt = watch('expiresAt');
+
+  let activeSettingsCount = 0;
+  if (responsesMode !== 'anonymous') activeSettingsCount++;
+  if (publishResults !== false) activeSettingsCount++;
+  if (expiresAt !== initialExpiry) activeSettingsCount++;
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -156,10 +183,25 @@ export default function PollBuilderPage() {
         </div>
         <div className="flex items-center gap-2">
           <Button
+            variant="ghost"
+            onClick={() => setIsSettingsOpen(true)}
+            className="lg:hidden relative mr-2"
+            icon={<Settings className="w-5 h-5" />}
+          >
+            Settings
+            {activeSettingsCount > 0 && (
+              <span className="ml-1.5 flex items-center justify-center w-5 h-5 text-xs font-bold bg-accent text-white rounded-full">
+                {activeSettingsCount}
+              </span>
+            )}
+          </Button>
+
+          <Button
             variant="secondary"
             onClick={handleSubmit((data) => onSubmit(data, false))}
             disabled={isSubmitting}
             icon={<Save className="w-4 h-4" />}
+            className="hidden sm:flex"
           >
             Save Draft
           </Button>
@@ -234,55 +276,43 @@ export default function PollBuilderPage() {
           </Button>
         </div>
 
-        {/* Settings Sidebar */}
-        <div className="w-80 shrink-0 hidden md:block">
+        {/* Settings Sidebar - Desktop Only */}
+        <div className="w-80 shrink-0 hidden lg:block">
           <div className="card p-6 sticky top-32 space-y-6">
             <div className="flex items-center gap-2 mb-4 text-text-heading dark:text-text-dark-h font-heading font-semibold">
               <Settings className="w-5 h-5" />
               Settings
+              {activeSettingsCount > 0 && (
+                <span className="ml-auto text-xs font-medium text-text-muted dark:text-text-dark bg-bg-2 dark:bg-bg-dark-2 px-2 py-0.5 rounded-full">
+                  {activeSettingsCount} active
+                </span>
+              )}
             </div>
 
-            <Controller
-              name="responsesMode"
-              control={control}
-              render={({ field }) => (
-                <ToggleSwitch
-                  checked={field.value === 'authenticated'}
-                  onChange={(val) =>
-                    field.onChange(val ? 'authenticated' : 'anonymous')
-                  }
-                  label="Require Sign In"
-                  description="Users must be logged in to vote"
-                />
-              )}
-            />
-
-            <Controller
-              name="publishResults"
-              control={control}
-              render={({ field }) => (
-                <ToggleSwitch
-                  checked={field.value}
-                  onChange={field.onChange}
-                  label="Public Results"
-                  description="Allow anyone to view analytics"
-                />
-              )}
-            />
-
-            <div>
-              <label className="block text-sm font-medium text-text-heading dark:text-text-dark-h mb-2">
-                Expiry Date (Required)
-              </label>
-              <input
-                type="datetime-local"
-                {...register('expiresAt')}
-                className="w-full px-3 py-2 bg-bg-2 dark:bg-bg-dark-2 border border-border dark:border-border-dark rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-accent"
-              />
-            </div>
+            <PollSettings control={control} register={register} />
           </div>
         </div>
       </div>
+
+      {/* Drawer for Mobile/Tablet Settings */}
+      <Drawer
+        open={isSettingsOpen}
+        onClose={() => setIsSettingsOpen(false)}
+        placement={isMobile ? 'bottom' : 'right'}
+        title="Settings"
+        footer={
+          <div className="flex justify-end gap-3">
+            <Button variant="secondary" onClick={() => setIsSettingsOpen(false)}>
+              Cancel
+            </Button>
+            <Button onClick={() => setIsSettingsOpen(false)}>
+              Done
+            </Button>
+          </div>
+        }
+      >
+        <PollSettings control={control} register={register} />
+      </Drawer>
     </div>
   );
 }
