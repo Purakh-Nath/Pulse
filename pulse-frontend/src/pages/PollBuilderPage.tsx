@@ -301,12 +301,12 @@ export default function PollBuilderPage() {
             <div className="card p-4 flex flex-col sm:flex-row items-center gap-3 bg-gradient-to-r from-accent/5 to-transparent border-accent/20">
               <Sparkles className="w-5 h-5 text-accent shrink-0" />
               <div className="flex-1 w-full">
-                <input
-                  type="text"
+                <TextareaAutosize
+                  minRows={1}
                   value={aiTopic}
                   onChange={(e) => setAiTopic(e.target.value)}
                   placeholder="Describe a topic... (e.g. 'Best frontend frameworks in 2026')"
-                  className="w-full text-sm font-medium bg-transparent border-none outline-none placeholder:text-gray-400 text-text-heading dark:text-text-dark-h"
+                  className="w-full text-sm font-medium bg-transparent border-none outline-none resize-none overflow-hidden placeholder:text-gray-400 text-text-heading dark:text-text-dark-h"
                   disabled={isGeneratingAI}
                   onKeyDown={(e) => {
                     if (e.key === 'Enter') {
