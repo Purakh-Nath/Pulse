@@ -53,4 +53,9 @@ export const pollsService = {
   async deletePoll(pollId: string): Promise<void> {
     await api.delete(`/polls/${pollId}`);
   },
+
+  async generatePollWithAI(topic: string): Promise<Partial<CreatePollInput>> {
+    const response = await api.post<ApiSuccess<Partial<CreatePollInput>>>('/polls/ai-generate', { topic });
+    return response.data.data;
+  },
 };

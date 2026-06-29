@@ -8,7 +8,7 @@ import {DndContext,closestCenter,KeyboardSensor,PointerSensor,useSensor,useSenso
 import {SortableContext,sortableKeyboardCoordinates,verticalListSortingStrategy,useSortable,} from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { useQuery } from '@tanstack/react-query';
-import { Plus, Trash2, GripVertical, Settings, ArrowLeft, Save, Send, Info } from 'lucide-react';
+import { Plus, Trash2, GripVertical, Settings, ArrowLeft, Save, Send, Info, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { ToggleSwitch } from '@/components/ui/ToggleSwitch';
 import { Drawer } from '@/components/ui/Drawer';
@@ -53,6 +53,8 @@ export default function PollBuilderPage() {
   const { pollId } = useParams();
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isGeneratingAI, setIsGeneratingAI] = useState(false);
+  const [aiTopic, setAiTopic] = useState('');
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
@@ -151,6 +153,31 @@ export default function PollBuilderPage() {
       const oldIndex = fields.findIndex((f: any) => f.id === active.id);
       const newIndex = fields.findIndex((f: any) => f.id === over.id);
       move(oldIndex, newIndex);
+    }
+  };
+
+  const handleAIGenerate = async () => {
+    if (!aiTopic.trim()) return;
+    try {
+      setIsGeneratingAI(true);
+      const aiData = await pollsService.generatePollWithAI(aiTopic.trim());
+      
+      // Update form with AI data
+      reset({
+        ...watch(), // Keep existing settings like responsesMode
+        title: aiData.title || watch('title'),
+        description: aiData.description || watch('description'),
+        questions: (aiData.questions && aiData.questions.length > 0) 
+          ? aiData.questions as any
+          : watch('questions'),
+      });
+      
+      setAiTopic('');
+      toast.success('Poll generated successfully!');
+    } catch (error: any) {
+      toast.error(error?.response?.data?.error?.message || 'Failed to generate poll');
+    } finally {
+      setIsGeneratingAI(false);
     }
   };
 
@@ -268,6 +295,38 @@ export default function PollBuilderPage() {
               </p>
             </div>
           )}
+
+          {!pollId && (
+            <div className="card p-4 flex flex-col sm:flex-row items-center gap-3 bg-gradient-to-r from-accent/5 to-transparent border-accent/20">
+              <Sparkles className="w-5 h-5 text-accent shrink-0" />
+              <div className="flex-1 w-full">
+                <input
+                  type="text"
+                  value={aiTopic}
+                  onChange={(e) => setAiTopic(e.target.value)}
+                  placeholder="Describe a topic... (e.g. 'Best frontend frameworks in 2026')"
+                  className="w-full text-sm font-medium bg-transparent border-none outline-none placeholder:text-gray-400 text-text-heading dark:text-text-dark-h"
+                  disabled={isGeneratingAI}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      e.preventDefault();
+                      handleAIGenerate();
+                    }
+                  }}
+                />
+              </div>
+              <Button 
+                onClick={handleAIGenerate} 
+                loading={isGeneratingAI}
+                disabled={!aiTopic.trim()}
+                className="w-full sm:w-auto shrink-0"
+                size="sm"
+              >
+                Auto-Generate
+              </Button>
+            </div>
+          )}
+
           <div className="card p-6">
             <input
               {...register('title')}
