@@ -196,22 +196,23 @@ export default function PollBuilderPage() {
             )}
           </Button>
 
-          <Button
-            variant="secondary"
-            onClick={handleSubmit((data) => onSubmit(data, false))}
-            disabled={isSubmitting}
-            icon={<Save className="w-4 h-4" />}
-            className="hidden sm:flex"
-          >
-            Save Draft
-          </Button>
-          <Button
-            onClick={handleSubmit((data) => onSubmit(data, true))}
-            loading={isSubmitting}
-            icon={<Send className="w-4 h-4" />}
-          >
-            Publish
-          </Button>
+          <div className="hidden sm:flex items-center gap-2">
+            <Button
+              variant="secondary"
+              onClick={handleSubmit((data) => onSubmit(data, false))}
+              disabled={isSubmitting}
+              icon={<Save className="w-4 h-4" />}
+            >
+              Save Draft
+            </Button>
+            <Button
+              onClick={handleSubmit((data) => onSubmit(data, true))}
+              loading={isSubmitting}
+              icon={<Send className="w-4 h-4" />}
+            >
+              Publish
+            </Button>
+          </div>
         </div>
       </div>
 
@@ -313,6 +314,25 @@ export default function PollBuilderPage() {
       >
         <PollSettings control={control} register={register} />
       </Drawer>
+
+      {/* Mobile Sticky Bottom Action Bar */}
+      <div className="sm:hidden fixed inset-x-0 bottom-0 z-40 bg-bg/90 dark:bg-bg-dark/90 backdrop-blur-md border-t border-border dark:border-border-dark p-4 flex gap-3 shadow-[0_-4px_20px_rgba(0,0,0,0.05)]">
+        <Button
+          variant="secondary"
+          onClick={handleSubmit((data) => onSubmit(data, false))}
+          disabled={isSubmitting}
+          className="flex-1"
+        >
+          Save Draft
+        </Button>
+        <Button
+          onClick={handleSubmit((data) => onSubmit(data, true))}
+          loading={isSubmitting}
+          className="flex-1"
+        >
+          Publish
+        </Button>
+      </div>
     </div>
   );
 }
