@@ -7,7 +7,12 @@ import {
   ExternalLink,
   ChevronRight,
   Globe,
+  Pencil,
+  Trash2,
 } from 'lucide-react';
+import { useQueryClient } from '@tanstack/react-query';
+import { pollsService } from '@/api/polls';
+import toast from 'react-hot-toast';
 import { cn } from '@/lib/cn';
 import { formatRelative, formatNumber } from '@/lib/formatters';
 import { LiveBadge } from '@/components/ui/LiveBadge';
@@ -44,7 +49,21 @@ interface PollCardProps {
 
 export function PollCard({ poll, index = 0 }: PollCardProps) {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const config = statusConfig[poll.status];
+
+  const handleDelete = async (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (!window.confirm('Are you sure you want to delete this poll? This action cannot be undone.')) return;
+    
+    try {
+      await pollsService.deletePoll(poll.id);
+      toast.success('Poll deleted successfully');
+      queryClient.invalidateQueries({ queryKey: ['polls'] });
+    } catch {
+      toast.error('Failed to delete poll');
+    }
+  };
 
   return (
     <motion.div
@@ -131,6 +150,23 @@ export function PollCard({ poll, index = 0 }: PollCardProps) {
               Share
             </button>
           )}
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              navigate(`/dashboard/polls/${poll.id}/edit`);
+            }}
+            className="flex items-center gap-1.5 text-xs text-text-muted hover:text-text-heading dark:hover:text-text-dark-h font-medium transition-colors"
+          >
+            <Pencil className="w-3.5 h-3.5" />
+            Edit
+          </button>
+          <button
+            onClick={handleDelete}
+            className="flex items-center gap-1.5 text-xs text-danger/70 hover:text-danger font-medium transition-colors"
+          >
+            <Trash2 className="w-3.5 h-3.5" />
+            Delete
+          </button>
         </div>
         <ChevronRight className="w-4 h-4 text-text-muted opacity-50 group-hover:opacity-100 group-hover:text-accent transition-all" />
       </div>
