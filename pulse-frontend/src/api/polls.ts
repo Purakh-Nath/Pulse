@@ -49,4 +49,8 @@ export const pollsService = {
     );
     return response.data.data;
   },
+
+  async deletePoll(pollId: string): Promise<void> {
+    await api.delete(`/polls/${pollId}`);
+  },
 };
