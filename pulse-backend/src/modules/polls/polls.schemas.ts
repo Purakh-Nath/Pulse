@@ -44,3 +44,7 @@ export const listPollsQuerySchema = z.object({
   limit: z.coerce.number().int().min(1).max(100).default(20),
   status: z.enum(['draft', 'active', 'expired', 'closed']).optional(),
 });
+
+export const aiGeneratePollSchema = z.object({
+  topic: z.string().min(3).max(500),
+});

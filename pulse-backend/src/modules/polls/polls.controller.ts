@@ -77,3 +77,11 @@ export async function deletePoll(req: Request, res: Response, next: NextFunction
     noContent(res);
   } catch (err) { next(err); }
 }
+
+export async function generatePollFromAI(req: Request, res: Response, next: NextFunction): Promise<void> {
+  try {
+    const { topic } = req.body;
+    const generatedPoll = await service.generatePollFromAI(topic);
+    ok(res, generatedPoll);
+  } catch (err) { next(err); }
+}

@@ -6,6 +6,7 @@ import { cachedFetch, invalidatePollCache } from '../../services/cache';
 import { scheduleExpiryJob, getPublishQueue } from '../../queues';
 import { NotFoundError, ForbiddenError, AppError, ErrorCode, PollExpiredError } from '../../shared/errors';
 import { buildPagination, buildPaginatedResult } from '../../utils/pagination';
+import Anthropic from '@anthropic-ai/sdk';
 import type { z } from 'zod';
 import type {
   createPollSchema,
@@ -227,4 +228,85 @@ export async function assertPollAcceptsResponses(pollId: string) {
     throw new AppError('Poll is not accepting responses', 400, ErrorCode.POLL_INACTIVE);
   }
   return poll;
+}
+
+const anthropicClient = new Anthropic();
+
+export async function generatePollFromAI(topic: string) {
+  try {
+    const message = await anthropicClient.messages.create({
+    model: 'claude-haiku-4-5-20251001',
+    max_tokens: 1024,
+    temperature: 0.7,
+    system: [
+      {
+        type: 'text',
+        text: "You are a helpful AI that generates perfectly structured polls based on a user's topic. Use a professional, clean tone with absolutely no emojis in the text.",
+        cache_control: { type: 'ephemeral' }
+      }
+    ],
+    messages: [
+      {
+        role: 'user',
+        content: `Generate a poll about: ${topic}. Make sure it has a catchy title, a short description, and between 2 to 5 relevant questions. Each question must have between 2 to 4 options.`,
+      },
+    ],
+    tools: [
+      {
+        name: 'generate_poll',
+        description: 'Generates the poll data structure.',
+        input_schema: {
+          type: 'object',
+          properties: {
+            title: { type: 'string', description: 'Catchy title for the poll (max 300 chars)' },
+            description: { type: 'string', description: 'Brief description of the poll' },
+            questions: {
+              type: 'array',
+              items: {
+                type: 'object',
+                properties: {
+                  text: { type: 'string', description: 'The question text' },
+                  isRequired: { type: 'boolean', description: 'Whether the question is required' },
+                  options: {
+                    type: 'array',
+                    items: {
+                      type: 'object',
+                      properties: {
+                        text: { type: 'string', description: 'The option text' }
+                      },
+                      required: ['text']
+                    },
+                    minItems: 2,
+                    maxItems: 4
+                  }
+                },
+                required: ['text', 'isRequired', 'options']
+              },
+              minItems: 1,
+              maxItems: 5
+            }
+          },
+          required: ['title', 'description', 'questions']
+        }
+      }
+    ],
+    tool_choice: { type: 'tool', name: 'generate_poll' }
+  });
+
+    const toolUse = message.content.find((c) => c.type === 'tool_use');
+    if (toolUse && toolUse.type === 'tool_use') {
+      return toolUse.input;
+    }
+
+    throw new AppError(`Failed to generate poll from AI. (stop_reason: ${message.stop_reason})`, 500, ErrorCode.INTERNAL_ERROR);
+  } catch (error: any) {
+    if (error instanceof AppError) throw error;
+    
+    // Catch rate limits, API down, etc. and bubble as a safe AppError
+    throw new AppError(
+      `AI Service Error: ${error?.message || 'Unable to communicate with Anthropic API'}`, 
+      502, 
+      ErrorCode.INTERNAL_ERROR
+    );
+  }
 }
