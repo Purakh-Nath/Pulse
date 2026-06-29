@@ -3,8 +3,8 @@ import type { UseFormRegister, Control } from 'react-hook-form';
 import { ToggleSwitch } from '@/components/ui/ToggleSwitch';
 
 interface PollSettingsProps {
-  control: Control<any>;
-  register: UseFormRegister<any>;
+  control: any;
+  register: any;
 }
 
 export function PollSettings({ control, register }: PollSettingsProps) {
